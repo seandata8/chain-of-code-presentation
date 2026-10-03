@@ -21,3 +21,21 @@
   background-color: #fff176;
   padding: 0 0.15em;
 }
+
+/* Smaller bullet text: ::: {.small-text} */
+.reveal .small-text {
+  font-size: 60%;
+}
+.reveal .small-text ul {
+  margin-top: 0.3em;
+  margin-bottom: 0.8em;
+}
+
+/* Less space around images inside columns */
+.reveal .column p:has(> img) {
+  margin: 0;
+  line-height: 0;
+}
+.reveal .column p > img {
+  margin: 0;
+}

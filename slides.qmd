@@ -53,6 +53,41 @@ I’ve been to Mumbai, London, Washington, Grand Canyon, Baltimore, Longsheng, G
 [Figure A5 from Li et al., ICML 2024](https://arxiv.org/abs/2312.04474)
 :::
 
+## Three Prompts to Answer "How Many Countries" {.small-title}
+
+:::: {.columns}
+::: {.column width="50%"}
+![](images/prompt-direct-answer.png)
+
+::: {.small-text}
+- Model answers immediately, no reasoning
+- Right only 10%
+:::
+
+![](images/prompt-chain-of-thought.png)
+
+::: {.small-text}
+- Model reasons step-by-step in words
+- Still right only 10%
+:::
+:::
+
+::: {.column width="50%"}
+![](images/prompt-chain-of-code.png)
+
+::: {.small-text}
+- Model writes code to solve it
+- Lines in red evaluated with Python
+- Lines in purple evaluated with an LLM
+- **Right 100% of the time**
+:::
+:::
+::::
+
+::: aside
+[Figure 1 from Li et al., ICML 2024](https://arxiv.org/abs/2312.04474)
+:::
+
 ## The idea
 
 Text for your second slide.
