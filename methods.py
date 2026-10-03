@@ -7,30 +7,20 @@ import coc
 from llm import generate
 from prompts import coc_prompt, cot_prompt, direct_prompt, question
 
-# Accepted variants of holiday names (after normalize()).
-ALIASES = {
-    "thanksgiving day": "thanksgiving",
-    "christmas": "christmas day",
-    "new years": "new years day",
-    "labor day": "labour day",
-    "truth and reconciliation day": "national day for truth and reconciliation",
-    "day for truth and reconciliation": "national day for truth and reconciliation",
-}
-
-
 def normalize(name: str) -> str:
-    """Lower case, no punctuation or parentheses, aliases resolved."""
-    name = re.sub(r"\(.*?\)", "", name.lower()).replace("&", "and")
+    """Lower case, no punctuation, parentheses, or possessive 's."""
+    name = re.sub(r"\(.*?\)", "", name.lower())
+    name = re.sub(r"['’]s\b", "", name)
     name = re.sub(r"[^a-z ]", "", name)
-    name = " ".join(name.split()).removeprefix("the ")
-    return ALIASES.get(name, name)
+    return " ".join(name.split())
 
 
 def is_correct(model_answer, truth: list[tuple[str, date]]) -> bool:
-    """Correct if it names any correct holiday (two in a tie)."""
+    """Correct if it names any correct scientist (two in a tie); a surname alone is enough."""
     if not model_answer:
         return False
-    return normalize(str(model_answer)) in {normalize(name) for name, _ in truth}
+    given = normalize(str(model_answer))
+    return any(given in (normalize(name), normalize(name).split()[-1]) for name, _ in truth)
 
 
 def run_direct(d: date) -> dict:

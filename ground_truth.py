@@ -1,54 +1,42 @@
-"""Correct answers for the demo question, computed from the holiday rules.
+"""Correct answers for the demo question, computed in Python.
 
-Question: Of the Canadian federal statutory holidays that are at least
-100 days before or after {date}, which one is closest to {date}?
+Question: Of the birthdays of these ten scientists that are at least 100
+days before or after {date}, whose is closest to {date}?
 """
 
-from datetime import date, timedelta
+from datetime import date
 
-from dateutil.easter import easter
+# Birth dates checked against Wikidata (October 2026).
+BIRTH_DATES = {
+    "Frederick Banting": date(1891, 11, 14),
+    "Marie Curie": date(1867, 11, 7),
+    "Charles Darwin": date(1809, 2, 12),
+    "Albert Einstein": date(1879, 3, 14),
+    "Carl Friedrich Gauss": date(1777, 4, 30),
+    "Stephen Hawking": date(1942, 1, 8),
+    "Ada Lovelace": date(1815, 12, 10),
+    "Ernest Rutherford": date(1871, 8, 30),
+    "Nikola Tesla": date(1856, 7, 10),
+    "Alan Turing": date(1912, 6, 23),
+}
+SCIENTISTS = list(BIRTH_DATES)  # alphabetical by surname, so the order gives nothing away
 
-FIRST_YEAR = 1983  # first year the July 1 holiday was called Canada Day
+FIRST_YEAR = 1943  # every scientist has been born by the previous year
 MIN_DAYS = 100
 
 
-def nth_monday(year: int, month: int, n: int) -> date:
-    """The n-th Monday of a month (n = 1 for the first)."""
-    first = date(year, month, 1)
-    first_monday = first + timedelta(days=(0 - first.weekday()) % 7)
-    return first_monday + timedelta(weeks=n - 1)
-
-
-def monday_before(d: date) -> date:
-    """The last Monday strictly before d."""
-    return d - timedelta(days=d.weekday() or 7)
-
-
-def federal_holidays(year: int) -> list[tuple[str, date]]:
-    """Federal general holidays in the Canada Labour Code (actual dates, not observed)."""
-    days = [
-        ("New Year's Day", date(year, 1, 1)),
-        ("Good Friday", easter(year) - timedelta(days=2)),
-        ("Victoria Day", monday_before(date(year, 5, 25))),
-        ("Canada Day", date(year, 7, 1)),
-        ("Labour Day", nth_monday(year, 9, 1)),
-        ("Thanksgiving", nth_monday(year, 10, 2)),
-        ("Remembrance Day", date(year, 11, 11)),
-        ("Christmas Day", date(year, 12, 25)),
-        ("Boxing Day", date(year, 12, 26)),
-    ]
-    if year >= 2021:
-        days.append(("National Day for Truth and Reconciliation", date(year, 9, 30)))
-    return sorted(days, key=lambda h: h[1])
+def birthdays(year: int) -> list[tuple[str, date]]:
+    """Each scientist's birthday in the given year."""
+    return [(name, date(year, born.month, born.day)) for name, born in BIRTH_DATES.items()]
 
 
 def answer(d: date) -> list[tuple[str, date]]:
-    """Closest holiday at least 100 days from d (two if there is a tie)."""
+    """Closest birthday at least 100 days from d (two if there is a tie)."""
     if d.year < FIRST_YEAR:
         raise ValueError(f"Dates before {FIRST_YEAR} are not supported.")
     candidates = []
     for year in (d.year - 1, d.year, d.year + 1):
-        for name, day in federal_holidays(year):
+        for name, day in birthdays(year):
             distance = abs((day - d).days)
             if distance >= MIN_DAYS:
                 candidates.append((distance, name, day))

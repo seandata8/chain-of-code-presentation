@@ -1,4 +1,4 @@
-"""Answer the holiday question three ways for one date.
+"""Answer the scientists' birthday question three ways for one date.
 
 Usage: uv run demo.py "15 March 2027"   (or 2027-03-15)
 """
@@ -27,7 +27,7 @@ def main():
     d = parse_date(sys.argv[1])
     if d.year < FIRST_YEAR:
         sys.exit(f"Sorry, please pick a date in {FIRST_YEAR} or later "
-                 f"(the first year the July 1 holiday was called Canada Day).")
+                 f"(so every scientist has been born).")
 
     print(question(d))
     truth = answer(d)

@@ -6,9 +6,9 @@ computed with ground_truth.py, so the examples are guaranteed correct.
 
 from datetime import date, timedelta
 
-from ground_truth import MIN_DAYS, answer, federal_holidays
+from ground_truth import MIN_DAYS, SCIENTISTS, answer, birthdays
 
-EXAMPLE_DATES = [date(2009, 6, 12), date(2016, 12, 10), date(2031, 10, 30)]
+EXAMPLE_DATES = [date(2009, 6, 12), date(2005, 9, 15), date(2024, 8, 1)]
 
 
 def fmt(d: date) -> str:
@@ -18,8 +18,9 @@ def fmt(d: date) -> str:
 
 def question(d: date) -> str:
     return (
-        f"Q: Of the Canadian federal statutory holidays that are at least "
-        f"{MIN_DAYS} days before or after {fmt(d)}, which one is closest to {fmt(d)}?"
+        f"Q: Of the birthdays of {', '.join(SCIENTISTS[:-1])}, and {SCIENTISTS[-1]} "
+        f"that are at least {MIN_DAYS} days before or after {fmt(d)}, "
+        f"whose is closest to {fmt(d)}?"
     )
 
 
@@ -29,11 +30,11 @@ def direct_example(d: date) -> str:
 
 
 def cot_example(d: date) -> str:
-    holidays = [h for year in (d.year - 1, d.year, d.year + 1) for h in federal_holidays(year)]
+    days = [b for year in (d.year - 1, d.year, d.year + 1) for b in birthdays(year)]
     too_late = d - timedelta(days=MIN_DAYS)
     too_early = d + timedelta(days=MIN_DAYS)
-    before_name, before_day = max((h for h in holidays if h[1] <= too_late), key=lambda h: h[1])
-    after_name, after_day = min((h for h in holidays if h[1] >= too_early), key=lambda h: h[1])
+    before_name, before_day = max((b for b in days if b[1] <= too_late), key=lambda b: b[1])
+    after_name, after_day = min((b for b in days if b[1] >= too_early), key=lambda b: b[1])
     before_days = (d - before_day).days
     after_days = (after_day - d).days
     name = before_name if before_days < after_days else after_name
@@ -44,9 +45,9 @@ def cot_example(d: date) -> str:
         "A: Let's think step by step.",
         f"{MIN_DAYS} days before {fmt(d)} is {fmt(too_late)}, "
         f"and {MIN_DAYS} days after is {fmt(too_early)}.",
-        f"The last holiday on or before {fmt(too_late)} is {before_name} "
+        f"The last birthday on or before {fmt(too_late)} is {before_name}'s "
         f"({fmt(before_day)}), which is {before_days} days before {fmt(d)}.",
-        f"The first holiday on or after {fmt(too_early)} is {after_name} "
+        f"The first birthday on or after {fmt(too_early)} is {after_name}'s "
         f"({fmt(after_day)}), which is {after_days} days after {fmt(d)}.",
         f"{smaller} is less than {larger}, so the closest is {name}.",
         f"So the answer is {name}.",
@@ -56,12 +57,17 @@ def cot_example(d: date) -> str:
 def coc_code(d: date) -> str:
     return f"""from datetime import date
 target = date({d.year}, {d.month}, {d.day})
-all_holidays = []
-for year in [target.year - 1, target.year, target.year + 1]:
-    year_holidays = get_canadian_federal_holidays(year)
-    all_holidays += year_holidays
-far_enough = [(name, day) for name, day in all_holidays if abs((day - target).days) >= {MIN_DAYS}]
-answer = min(far_enough, key=lambda h: abs((h[1] - target).days))[0]"""
+scientists = {SCIENTISTS!r}
+born = {{}}
+for name in scientists:
+    birth_date = get_birth_date(name)
+    born[name] = birth_date
+birthdays = []
+for name in scientists:
+    for year in [target.year - 1, target.year, target.year + 1]:
+        birthdays.append((name, date(year, born[name].month, born[name].day)))
+far_enough = [(name, day) for name, day in birthdays if abs((day - target).days) >= {MIN_DAYS}]
+answer = min(far_enough, key=lambda b: abs((b[1] - target).days))[0]"""
 
 
 def coc_example(d: date) -> str:

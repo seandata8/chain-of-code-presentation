@@ -1,7 +1,7 @@
 """Chain of Code execution: the Interweave method (Section 2.3 of the paper).
 
 Python runs each line of the model's code. When a line fails (for example,
-it calls an undefined helper like get_canadian_federal_holidays), the LM
+it calls an undefined helper like get_birth_date), the LM
 acts as a code emulator ("LMulator"): it is shown the question, the code
 so far, and the program state, and it returns the new values of the
 variables that line changes (the "delta state"). Execution then continues.
@@ -22,8 +22,8 @@ SIMPLE_TYPES = (bool, int, float, str, list, tuple, dict, set, date, type(None))
 
 RED, PURPLE, RESET = "\033[31m", "\033[35m", "\033[0m"
 
-# Shows the LM the trace format. Deliberately about something other than
-# Canadian holidays, so it doesn't give away any of the answer.
+# Shows the LM the trace format. Deliberately about people other than the
+# demo's ten scientists, so it doesn't give away any of the answer.
 LMULATOR_EXAMPLES = """Q: Which Beatle was born first?
 from datetime import date
 birthdays = get_beatles_birthdays()
@@ -32,10 +32,10 @@ line: birthdays = get_beatles_birthdays()
 delta state: {'birthdays': [('John Lennon', date(1940, 10, 9)), ('Paul McCartney', date(1942, 6, 18)), ('George Harrison', date(1943, 2, 25)), ('Ringo Starr', date(1940, 7, 7))]}
 
 Q: What are the capitals of France and Japan?
-capitals = []
+capitals = {}
 for country in ['France', 'Japan']:
     capital = get_capital(country)
-state: {'capitals': ['Paris'], 'country': 'Japan', 'capital': 'Paris'}
+state: {'capitals': {'France': 'Paris'}, 'country': 'Japan'}
 line:     capital = get_capital(country)
 delta state: {'capital': 'Tokyo'}"""
 
@@ -80,7 +80,23 @@ def parse_delta_state(text: str) -> dict:
     return value
 
 
+def assigned_names(line: str) -> set[str]:
+    """Variables a plain assignment line overwrites, e.g. {'born'} for `born = f(x)`."""
+    try:
+        stmt = ast.parse(line.strip()).body[0]
+    except (SyntaxError, IndexError):
+        return set()
+    if not isinstance(stmt, ast.Assign):
+        return set()
+    targets = [t for target in stmt.targets for t in (target.elts if isinstance(target, ast.Tuple) else [target])]
+    return {t.id for t in targets if isinstance(t, ast.Name)}
+
+
 def ask_lmulator(question: str, lines: list[str], lineno: int, state: dict) -> str:
+    # Leave out the old values of the variables this line overwrites: a small
+    # LM tends to copy them (e.g. the previous scientist's birth date).
+    overwritten = assigned_names(lines[lineno - 1])
+    state = {name: value for name, value in state.items() if name not in overwritten}
     code_so_far = "\n".join(lines[:lineno])
     prompt = (
         f"{LMULATOR_EXAMPLES}\n\n{question}\n{code_so_far}\n"
