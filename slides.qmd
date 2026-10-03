@@ -1,0 +1,24 @@
+---
+title: "Chain of Code"
+subtitle: "Reasoning with a Language Model-Augmented Code Emulator"
+format:
+  revealjs:
+    controls: true
+---
+
+## The problem
+
+Text for your first slide.
+
+## The idea
+
+Text for your second slide.
+
+## References
+
+Li, C., Liang, J., Zeng, A., Chen, X., Hausman, K., Sadigh, D., Levine, S., Fei-Fei, L., Xia, F., & Ichter, B. (2024).
+*Chain of Code: Reasoning with a Language Model-Augmented Code Emulator.*
+Proceedings of the 41st International Conference on Machine Learning (ICML), PMLR 235.
+
+- Paper: <https://arxiv.org/abs/2312.04474>
+- Project page: <https://chain-of-code.github.io/>
