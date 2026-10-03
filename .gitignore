@@ -13,3 +13,6 @@ paper/
 .DS_Store
 
 /.quarto/
+
+# Python
+__pycache__/

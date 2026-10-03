@@ -35,3 +35,33 @@ quarto preview slides.qmd
 | `_quarto.yml` | Quarto project config (sets the output folder to `docs/`) |
 | `docs/` | Rendered site published by GitHub Pages |
 | `docs/index.html` | Redirects the site root to the slides |
+
+## Running the demo
+
+The demo asks a local language model one question three ways (Direct, Chain of Thought, Chain of Code) and checks each answer against one computed in Python:
+
+> Of the Canadian federal statutory holidays that are at least 100 days before or after {date}, which one is closest to {date}?
+
+It needs [uv](https://docs.astral.sh/uv/) and [Ollama](https://ollama.com/) with the base model pulled:
+
+```bash
+ollama pull qwen2.5-coder:7b-base
+```
+
+Then:
+
+```bash
+uv run demo.py "15 March 2027"   # one date (also accepts 2027-03-15); dates from 1983 on
+uv run rehearse.py               # all three methods on 15 test dates, with a summary table
+```
+
+The Chain of Code trace shows each line in red if Python ran it and purple if the language model emulated it.
+
+| File | Contents |
+| --- | --- |
+| `ground_truth.py` | Holiday dates from rules, and the correct answer |
+| `prompts.py` | Few-shot prompts for the three methods |
+| `llm.py` | The model call (Ollama, raw completion, temperature 0) |
+| `coc.py` | Chain of Code executor (Interweave: Python, falling back to the LM line by line) |
+| `methods.py` | Runs each method and grades its answer |
+| `demo.py`, `rehearse.py` | The scripts above |
