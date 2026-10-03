@@ -114,12 +114,13 @@ BIG-Bench Hard: 23 tasks that are hard for LLMs. Examples:
 [Figure 2 from Li et al., ICML 2024](https://arxiv.org/abs/2312.04474)
 :::
 
-## Code Helps Most on Algorithmic Tasks {.small-title}
+## Chain-of-Code Helps Most on Algorithmic Tasks {.small-title}
 
-![](images/results-task-type.png){width="82%" fig-align="center"}
+![](images/results-task-type.png){width="72%" fig-align="center"}
 
-::: {.small-text}
-Average accuracy on BIG-Bench Hard. On language tasks, CoC still matches CoT.
+::: {style="display: table; margin: -1.2em auto 0; font-size: 80%;"}
+- Average accuracy on BIG-Bench Hard.
+- On language tasks, CoC still matches CoT.
 :::
 
 ::: aside
@@ -128,10 +129,11 @@ Average accuracy on BIG-Bench Hard. On language tasks, CoC still matches CoT.
 
 ## Both Python and the LM Are Needed {.small-title}
 
-![](images/results-ablation.png){width="82%" fig-align="center"}
+![](images/results-ablation.png){width="76%" fig-align="center"}
 
-::: {.small-text}
-Average accuracy on BIG-Bench Hard. [Blue]{style="color: #2a78d6;"}: uses both Python and the LM.
+::: {style="display: table; margin: -2em auto 0; font-size: 80%;"}
+- Average accuracy on BIG-Bench Hard.
+- [Blue]{style="color: #2a78d6;"}: uses both Python and the LM.
 :::
 
 ::: aside

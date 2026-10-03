@@ -40,7 +40,7 @@ quarto preview slides.qmd
 
 The demo asks a local language model one question three ways (Direct, Chain of Thought, Chain of Code) and checks each answer against one computed in Python:
 
-> Of the Canadian federal statutory holidays that are at least 100 days before or after {date}, which one is closest to {date}?
+> Of the birthdays of Frederick Banting, Marie Curie, Charles Darwin, Albert Einstein, Carl Friedrich Gauss, Stephen Hawking, Ada Lovelace, Ernest Rutherford, Nikola Tesla, and Alan Turing that are at least 100 days before or after {date}, whose is closest to {date}?
 
 It needs [uv](https://docs.astral.sh/uv/) and [Ollama](https://ollama.com/) with the base model pulled:
 
@@ -51,7 +51,7 @@ ollama pull qwen2.5-coder:7b-base
 Then:
 
 ```bash
-uv run demo.py "15 March 2027"   # one date (also accepts 2027-03-15); dates from 1983 on
+uv run demo.py "15 March 2027"   # one date (also accepts 2027-03-15); dates from 1943 on
 uv run rehearse.py               # all three methods on 15 test dates, with a summary table
 ```
 
@@ -59,7 +59,7 @@ The Chain of Code trace shows each line in red if Python ran it and purple if th
 
 | File | Contents |
 | --- | --- |
-| `ground_truth.py` | Holiday dates from rules, and the correct answer |
+| `ground_truth.py` | The scientists' birth dates (checked against Wikidata), and the correct answer |
 | `prompts.py` | Few-shot prompts for the three methods |
 | `llm.py` | The model call (Ollama, raw completion, temperature 0) |
 | `coc.py` | Chain of Code executor (Interweave: Python, falling back to the LM line by line) |

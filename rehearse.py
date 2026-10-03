@@ -9,21 +9,21 @@ from ground_truth import answer
 from methods import METHODS, is_correct
 
 DATES = [
-    (date(1983, 1, 31), "tie, previous year"),
-    (date(1989, 12, 3), "next year"),
-    (date(1996, 8, 8), "Good Friday"),
-    (date(2003, 1, 2), "Good Friday"),
-    (date(2003, 2, 26), "previous year"),
-    (date(2014, 5, 5), ""),
-    (date(2019, 6, 15), "before 2021 (trap)"),
-    (date(2020, 1, 9), "before 2021 (trap), previous year"),
-    (date(2021, 5, 30), "Truth and Reconciliation"),
-    (date(2022, 12, 1), "Good Friday, next year"),
-    (date(2022, 12, 21), "tie, next year"),
-    (date(2025, 1, 10), "Truth and Reconciliation, previous year"),
-    (date(2027, 3, 15), ""),
-    (date(2029, 4, 8), "previous year"),
-    (date(2033, 6, 21), "Truth and Reconciliation"),
+    (date(1955, 7, 20), "Curie, after"),
+    (date(1962, 10, 5), "Turing, before"),
+    (date(1971, 6, 1), "Darwin, before"),
+    (date(1984, 3, 1), "Banting, previous year"),
+    (date(1990, 9, 1), "Lovelace, exactly 100 days"),
+    (date(2003, 2, 26), "Banting, previous year"),
+    (date(2007, 12, 20), "Rutherford, before"),
+    (date(2011, 1, 20), "Gauss, exactly 100 days"),
+    (date(2016, 4, 1), "Tesla, exactly 100 days"),
+    (date(2024, 1, 26), "tie, previous year"),
+    (date(2026, 11, 25), "Einstein, next year"),
+    (date(2027, 3, 15), "Turing, exactly 100 days"),
+    (date(2029, 8, 20), "tie"),
+    (date(2030, 4, 10), "Lovelace, previous year"),
+    (date(2033, 12, 31), "Gauss, next year"),
 ]
 
 
