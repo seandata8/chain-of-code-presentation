@@ -35,6 +35,7 @@
     }
   </style>
   <link rel="stylesheet" href="slides_files/libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link rel="stylesheet" href="styles.css">
   <link href="slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="slides_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -144,14 +145,32 @@
 </section>
 <section id="the-problem" class="slide level2">
 <h2>The problem</h2>
-<p>LLMs are great with language, but shaky with math.</p>
+<div class="middle">
+<div class="indent">
+<p>In 2024, LLMs were great with language, but shaky with math.</p>
+</div>
 <blockquote>
 <p>Which is bigger: 9.11 or 9.9?</p>
 </blockquote>
+<div class="indent">
 <p>GPT-4o, Claude 3.5, Llama 3 (2024): <strong>9.11</strong> <span style="color: red;">✗</span></p>
+</div>
+</div>
 
 <aside><div>
 <p><a href="https://x.com/DrJimFan/status/1816521330298356181">Jim Fan, X, July 2024</a></p>
+</div></aside></section>
+<section id="example-problem-requiring-both-language-and-math" class="slide level2 small-title">
+<h2>Example Problem Requiring Both Language and Math</h2>
+<div style="font-size: 70%;">
+<p><strong>How many countries have I been to?</strong></p>
+</div>
+<div style="font-size: 50%;">
+<p>I’ve been to Mumbai, London, Washington, Grand Canyon, Baltimore, Longsheng, Guilin, Beijing, Galapagos, Quito, Barcelona, <span class="hl">Paris</span>, Prague, Nice, Dehli, Agra, Rome, Florence, Amalfi, Athens, Míkonos, Málaga, Monaco, Berlin, Munich, Innsbruck, Bern, Milan, Lucerne, Gimmelwald (Schilthornbahn), St Moritz, St Petersburg, Helsinki, Amsterdam, Gdańsk, Vancouver, Anchorage, Montreal, <span class="hl">Belize</span>, The Bahamas, Jamaica, <span class="hl">Hawaii</span>, Acadia National Park, Stockholm, Copenhagen, Dover, Lyon, Madrid, Toulouse, Santorini, Oslo, Kusadasi, Souda, Rhodes, Tallinn, Venice, Naples, Cape Town, Johannesburg, Addis Abeba, Nairobi, Seattle, San Francisco, Chicago, St Louis, Memphis, Chinle, Stanford, New York, Philadelphia, Boston, Miami, New Orleans, <span class="hl">Walt Disney World Resort</span>, Jacksonville, Las Vegas, Los Angeles, Portland, Salt Lake City, Tahoe City, Phoenix, Albuquerque, Cleveland, Charlottesville, Nags Head, <span class="hl">Newfoundland and Labrador</span>, Burlington, Wilmington, Myrtle Beach, St Lucia, Barbados, Banff, Haiti, Montego Bay, Sao Palo, Rio, Lima, Cusco, Cozumel, Amarillo, <span class="hl">Yosemite National Park</span>, Joshua Tree, Zion National Park, Bryce Canyon National Park, Grand Teton National Park, Yellowstone National Park, Glacier National Park, Mount Hood, Paso Robles, San Diego, Bend, North Cascades National Park, Olympic National Park Visitor Center, Jasper National Park, Sequoia National Park, Kings Canyon National Park, Shasta National Forest, <span class="hl">Mount Saint Helens</span>, Mount Rainier, Austin, Buenos Aires, El Calafate, El Chaltén, Fitz Roy, Torres del Paine National Park, Puerto Natales, Puerto Varas, Santiago, Marble Caves, Cerro Castillo, Coyhaique, Singapore, Casablanca, Marrakesh, Cairo, Jerusalem, Tokyo, Kyoto Prefecture, Taipei City, Taichung City, Krk, Naturpark Puez-Geisler, Ljubljana, Plitvice Lakes National Park, Fairbanks, Juneau, Dallas, Sydney, Cairns, Brisbane, <span class="hl">Hook Island</span>, Charleston, Panama City, Bangkok, Chiang Mai, Bengaluru, Denver, Indianapolis, Nashville, Blacksburg, Lisbon, Porto, Estes Park, Coeur d’Alene, Hood River, Denali, Sitka, Mexico City, Warsaw, Geneva, Auckland, Queenstown, Whitefish, Minneapolis, Sioux Falls, Bozeman, Missoula, Springfield, Skye, Edinburgh, Honolulu, Kauai, Haleakalā National Park, Wrangell-St.&nbsp;Elias National Park &amp; Preserve, Atlanta, Tirana, Corfu, Siena.</p>
+</div>
+
+<aside><div>
+<p><a href="https://arxiv.org/abs/2312.04474">Figure A5 from Li et al., ICML 2024</a></p>
 </div></aside></section>
 <section id="the-idea" class="slide level2">
 <h2>The idea</h2>
@@ -223,7 +242,7 @@
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: false,
+        slideNumber: 'c/t',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',

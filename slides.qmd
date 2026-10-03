@@ -3,6 +3,8 @@ pagetitle: "Chain of Code"
 format:
   revealjs:
     controls: true
+    slide-number: true
+    css: styles.css
 ---
 
 ## {.center}
@@ -21,14 +23,34 @@ International Conference on Machine Learning (ICML) 2024
 
 ## The problem
 
-LLMs are great with language, but shaky with math.
+::: {.middle}
+::: {.indent}
+In 2024, LLMs were great with language, but shaky with math.
+:::
 
 > Which is bigger: 9.11 or 9.9?
 
+::: {.indent}
 GPT-4o, Claude 3.5, Llama 3 (2024): **9.11** [✗]{style="color: red;"}
+:::
+:::
 
 ::: aside
 [Jim Fan, X, July 2024](https://x.com/DrJimFan/status/1816521330298356181)
+:::
+
+## Example Problem Requiring Both Language and Math {.small-title}
+
+::: {style="font-size: 70%;"}
+**How many countries have I been to?**
+:::
+
+::: {style="font-size: 50%;"}
+I’ve been to Mumbai, London, Washington, Grand Canyon, Baltimore, Longsheng, Guilin, Beijing, Galapagos, Quito, Barcelona, [Paris]{.hl}, Prague, Nice, Dehli, Agra, Rome, Florence, Amalfi, Athens, Míkonos, Málaga, Monaco, Berlin, Munich, Innsbruck, Bern, Milan, Lucerne, Gimmelwald (Schilthornbahn), St Moritz, St Petersburg, Helsinki, Amsterdam, Gdańsk, Vancouver, Anchorage, Montreal, [Belize]{.hl}, The Bahamas, Jamaica, [Hawaii]{.hl}, Acadia National Park, Stockholm, Copenhagen, Dover, Lyon, Madrid, Toulouse, Santorini, Oslo, Kusadasi, Souda, Rhodes, Tallinn, Venice, Naples, Cape Town, Johannesburg, Addis Abeba, Nairobi, Seattle, San Francisco, Chicago, St Louis, Memphis, Chinle, Stanford, New York, Philadelphia, Boston, Miami, New Orleans, [Walt Disney World Resort]{.hl}, Jacksonville, Las Vegas, Los Angeles, Portland, Salt Lake City, Tahoe City, Phoenix, Albuquerque, Cleveland, Charlottesville, Nags Head, [Newfoundland and Labrador]{.hl}, Burlington, Wilmington, Myrtle Beach, St Lucia, Barbados, Banff, Haiti, Montego Bay, Sao Palo, Rio, Lima, Cusco, Cozumel, Amarillo, [Yosemite National Park]{.hl}, Joshua Tree, Zion National Park, Bryce Canyon National Park, Grand Teton National Park, Yellowstone National Park, Glacier National Park, Mount Hood, Paso Robles, San Diego, Bend, North Cascades National Park, Olympic National Park Visitor Center, Jasper National Park, Sequoia National Park, Kings Canyon National Park, Shasta National Forest, [Mount Saint Helens]{.hl}, Mount Rainier, Austin, Buenos Aires, El Calafate, El Chaltén, Fitz Roy, Torres del Paine National Park, Puerto Natales, Puerto Varas, Santiago, Marble Caves, Cerro Castillo, Coyhaique, Singapore, Casablanca, Marrakesh, Cairo, Jerusalem, Tokyo, Kyoto Prefecture, Taipei City, Taichung City, Krk, Naturpark Puez-Geisler, Ljubljana, Plitvice Lakes National Park, Fairbanks, Juneau, Dallas, Sydney, Cairns, Brisbane, [Hook Island]{.hl}, Charleston, Panama City, Bangkok, Chiang Mai, Bengaluru, Denver, Indianapolis, Nashville, Blacksburg, Lisbon, Porto, Estes Park, Coeur d’Alene, Hood River, Denali, Sitka, Mexico City, Warsaw, Geneva, Auckland, Queenstown, Whitefish, Minneapolis, Sioux Falls, Bozeman, Missoula, Springfield, Skye, Edinburgh, Honolulu, Kauai, Haleakalā National Park, Wrangell-St. Elias National Park & Preserve, Atlanta, Tirana, Corfu, Siena.
+:::
+
+::: aside
+[Figure A5 from Li et al., ICML 2024](https://arxiv.org/abs/2312.04474)
 :::
 
 ## The idea

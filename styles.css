@@ -1,0 +1,23 @@
+/* Vertically center a slide's body below its title: wrap the body in ::: {.middle} */
+.reveal .middle {
+  height: 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Indent a block: ::: {.indent} */
+.reveal .indent {
+  margin-left: 2em;
+}
+
+/* Smaller title for long slide headings: ## Heading {.small-title} */
+.reveal .small-title h2 {
+  font-size: 1.1em;
+}
+
+/* Yellow highlight: [text]{.hl} */
+.reveal .hl {
+  background-color: #fff176;
+  padding: 0 0.15em;
+}
