@@ -1,4 +1,4 @@
-# Source paper (copyrighted)
+# Source materials: paper PDF (copyrighted) and demo notebook
 paper/
 
 # Quarto (rendered output goes to docs/, which is committed for GitHub Pages)
