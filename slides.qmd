@@ -12,7 +12,9 @@ format:
 ::: {style="text-align: center;"}
 [^1^Stanford University · ^2^Google DeepMind · ^3^UC Berkeley]{style="font-size: 70%;"}
 
-ICML 2024
+International Conference on Machine Learning (ICML) 2024
+
+<hr style="width: 40%; margin: 0.6em auto;" />
 
 **Sean Murphy** · October 23, 2026
 :::
