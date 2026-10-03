@@ -88,6 +88,32 @@ I’ve been to Mumbai, London, Washington, Grand Canyon, Baltimore, Longsheng, G
 [Figure 1 from Li et al., ICML 2024](https://arxiv.org/abs/2312.04474)
 :::
 
+## Chain-of-Code Outperforms Direct-Answer and Chain-of-Thought {.smaller-title}
+
+![](images/figure-2-results.png)
+
+::: {.small-text}
+BIG-Bench Hard: 23 tasks that are hard for LLMs. Examples:
+
+:::: {.columns}
+::: {.column width="50%"}
+- **Arithmetic:** ((−3 + 5 × 8 × −4) − (9 − 8 × −7)) = ?
+- **Brackets:** close the sequence ( [ { } ]
+- **Dates:** what date was 10 days before Christmas Eve 1937?
+:::
+
+::: {.column width="50%"}
+- **Word order:** "terrible rubber ship" or "rubber terrible ship"?
+- **Sports:** is "the quarterback hit a home run" plausible?
+- **Sarcasm:** which of two sentences is sarcastic?
+:::
+::::
+:::
+
+::: aside
+[Figure 2 from Li et al., ICML 2024](https://arxiv.org/abs/2312.04474)
+:::
+
 ## The idea
 
 Text for your second slide.

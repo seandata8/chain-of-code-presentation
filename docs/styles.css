@@ -15,6 +15,9 @@
 .reveal .small-title h2 {
   font-size: 1.1em;
 }
+.reveal .smaller-title h2 {
+  font-size: 0.9em;
+}
 
 /* Yellow highlight: [text]{.hl} */
 .reveal .hl {
@@ -38,4 +41,9 @@
 }
 .reveal .column p > img {
   margin: 0;
+}
+
+/* Tighter spacing for a lead-in line followed by bullets */
+.reveal .small-text > p {
+  margin-bottom: 0.2em;
 }
