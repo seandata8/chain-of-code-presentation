@@ -5,6 +5,10 @@ paper/
 .quarto/
 **/*.quarto_ipynb
 
+# README preview output (the README is rendered by GitHub, not Quarto)
+/README.html
+/README_files/
+
 # macOS
 .DS_Store
 
