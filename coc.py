@@ -97,12 +97,15 @@ def ask_lmulator(question: str, lines: list[str], lineno: int, state: dict) -> s
     # LM tends to copy them (e.g. the previous scientist's birth date).
     overwritten = assigned_names(lines[lineno - 1])
     state = {name: value for name, value in state.items() if name not in overwritten}
+    # For a line like `x = ...`, start the answer as "{'x':" so the LM fills in
+    # x's value instead of jumping ahead to other variables.
+    start = f" {{'{next(iter(overwritten))}':" if len(overwritten) == 1 else ""
     code_so_far = "\n".join(lines[:lineno])
     prompt = (
         f"{LMULATOR_EXAMPLES}\n\n{question}\n{code_so_far}\n"
-        f"state: {show(state)}\nline: {lines[lineno - 1]}\ndelta state:"
+        f"state: {show(state)}\nline: {lines[lineno - 1]}\ndelta state:{start}"
     )
-    return generate(prompt, stop=["\n"], max_tokens=1000).strip()
+    return (start + generate(prompt, stop=["\n"], max_tokens=1000)).strip()
 
 
 def wrap_in_try(statements: list[ast.stmt], wrapped_lines: set[int]) -> list[ast.stmt]:
