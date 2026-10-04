@@ -10,7 +10,7 @@ model's output and whether it is right. A summary comes at the end.
 import sys
 from datetime import date, datetime
 
-import coc
+from checks import check_coc, check_cot, summary
 from ground_truth import FIRST_YEAR, answer
 from methods import METHODS, is_correct
 from prompts import coc_prompt, cot_prompt, direct_prompt, fmt, question
@@ -56,15 +56,21 @@ def main():
         print(f"\n{BOLD}===== {title}: prompt ====={RESET}\n{PROMPTS[title](d)}")
         pause(f"run {title}")
         print(f"\n{BOLD}===== {title}: model output ====={RESET}")
-        result = run(d)
-        print(result["raw"].strip())
-        if title == "Chain of Code":
-            print("\nTrace (red = Python, purple = LM):")
-            coc.print_trace(result["trace"])
-            if result["error"]:
-                print(f"Execution stopped: {result['error']}")
+        result = run(d, stream=True)  # prints the output (and CoC trace) as it is generated
+        if result.get("error"):
+            print(f"Execution stopped: {result['error']}")
         mark = "✓" if is_correct(result["answer"], truth) else "✗"
         print(f"\n{BOLD}{title} answer: {result['answer']}  {mark}{RESET}")
+        if title == "Chain of Thought":
+            checks = check_cot(result["raw"], d)
+            print(f"\nChecking each step ({summary(checks)}):")
+        elif title == "Chain of Code":
+            checks = check_coc(result["trace"])
+            print(f"\nChecking the LM's birth dates ({summary(checks)}):")
+        else:
+            checks = []
+        for kind, claim, ok in checks:
+            print(f"  {'✓' if ok else '✗'} {kind:<6} {claim}")
         results.append((title, result["answer"], mark))
 
     pause("see the results")

@@ -23,21 +23,23 @@ def is_correct(model_answer, truth: list[tuple[str, date]]) -> bool:
     return any(given in (normalize(name), normalize(name).split()[-1]) for name, _ in truth)
 
 
-def run_direct(d: date) -> dict:
-    raw = generate(direct_prompt(d), stop=["\nQ:", "\n"], max_tokens=30)
+def run_direct(d: date, stream: bool = False) -> dict:
+    raw = generate(direct_prompt(d), stop=["\nQ:", "\n"], max_tokens=30, stream=stream)
     return {"raw": raw, "answer": raw.strip()}
 
 
-def run_cot(d: date) -> dict:
-    raw = generate(cot_prompt(d), stop=["\nQ:", "\n\n"], max_tokens=500)
+def run_cot(d: date, stream: bool = False) -> dict:
+    raw = generate(cot_prompt(d), stop=["\nQ:", "\n\n"], max_tokens=500, stream=stream)
     # First match: the model sometimes keeps writing after its answer.
     found = re.findall(r"So the answer is (.+?)\.?\s*$", raw, flags=re.MULTILINE)
     return {"raw": raw, "answer": found[0].strip() if found else None}
 
 
-def run_coc(d: date) -> dict:
-    raw = generate(coc_prompt(d), stop=["\nQ:", "\n\n"], max_tokens=500)
-    answer, trace, error = coc.execute(question(d), raw.strip())
+def run_coc(d: date, stream: bool = False) -> dict:
+    raw = generate(coc_prompt(d), stop=["\nQ:", "\n\n"], max_tokens=500, stream=stream)
+    if stream:
+        print("\n\nTrace (red = Python, purple = LM):")
+    answer, trace, error = coc.execute(question(d), raw.strip(), stream=stream)
     return {"raw": raw, "answer": answer, "trace": trace, "error": error}
 
 

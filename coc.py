@@ -92,7 +92,7 @@ def assigned_names(line: str) -> set[str]:
     return {t.id for t in targets if isinstance(t, ast.Name)}
 
 
-def ask_lmulator(question: str, lines: list[str], lineno: int, state: dict) -> str:
+def ask_lmulator(question: str, lines: list[str], lineno: int, state: dict, stream: bool = False) -> str:
     # Leave out the old values of the variables this line overwrites: a small
     # LM tends to copy them (e.g. the previous scientist's birth date).
     overwritten = assigned_names(lines[lineno - 1])
@@ -105,7 +105,9 @@ def ask_lmulator(question: str, lines: list[str], lineno: int, state: dict) -> s
         f"{LMULATOR_EXAMPLES}\n\n{question}\n{code_so_far}\n"
         f"state: {show(state)}\nline: {lines[lineno - 1]}\ndelta state:{start}"
     )
-    return (start + generate(prompt, stop=["\n"], max_tokens=1000)).strip()
+    if stream:
+        print(start.strip(), end="", flush=True)
+    return (start + generate(prompt, stop=["\n"], max_tokens=1000, stream=stream)).strip()
 
 
 def wrap_in_try(statements: list[ast.stmt], wrapped_lines: set[int]) -> list[ast.stmt]:
@@ -127,11 +129,13 @@ def wrap_in_try(statements: list[ast.stmt], wrapped_lines: set[int]) -> list[ast
     return result
 
 
-def execute(question: str, code: str):
+def execute(question: str, code: str, stream: bool = False):
     """Run the code with Python, falling back to the LM line by line.
 
     Returns (answer, trace, error). Each trace entry is one line run:
     {"line", "by": "Python" or "LM", "delta": delta state, "lm_output"}.
+    With stream=True, print the trace live: each Python line when it
+    finishes, and each LM line's output as the LM writes it.
     """
     lines = code.splitlines()
     wrapped_lines = set()
@@ -146,6 +150,8 @@ def execute(question: str, code: str):
     def finish_line():
         if trace and trace[-1]["delta"] is None:
             trace[-1]["delta"] = get_delta_state(before, get_state(env))
+            if stream and trace[-1]["by"] == "Python":
+                print_entry(trace[-1])
 
     def tracer(frame, event, arg):
         nonlocal before
@@ -163,14 +169,20 @@ def execute(question: str, code: str):
             # silently switches tracing off.
             entry = trace[-1]
             entry["by"] = "LM"
+            if stream:
+                print(f"{PURPLE}{'LM':>6} | {entry['line']}\n       | delta state: ", end="", flush=True)
             try:
-                entry["lm_output"] = ask_lmulator(question, lines, frame.f_lineno, before)
+                entry["lm_output"] = ask_lmulator(question, lines, frame.f_lineno, before, stream)
                 entry["delta"] = parse_delta_state(entry["lm_output"])  # show what the LM said
                 env.update(entry["delta"])
                 entry["usable"] = True
             except Exception as e:
                 entry["usable"] = False  # state is unchanged; the trace shows why
                 entry["lm_error"] = f"{type(e).__name__}: {e}"
+            if stream:
+                print(RESET)
+                if not entry["usable"]:
+                    print(f"       | (LM output not usable: {entry['lm_error']})")
         elif event == "return":
             finish_line()
         return tracer
@@ -186,18 +198,22 @@ def execute(question: str, code: str):
     return env.get("answer"), trace, error
 
 
-def print_trace(trace: list[dict], width: int = 160) -> None:
-    """Python lines in red, LM lines in purple, as in the paper's figures.
+def print_entry(entry: dict, width: int = 160) -> None:
+    """One trace line: Python in red, LM in purple, as in the paper's figures.
 
     The LM's output is shown in full; long Python deltas are cut to `width`.
     """
+    color = RED if entry["by"] == "Python" else PURPLE
+    print(f"{color}{entry['by']:>6} | {entry['line']}{RESET}")
+    if entry["by"] == "LM" and not entry["usable"]:
+        print(f"       | LM output not usable ({entry['lm_error']}): {entry['lm_output']}")
+        return
+    delta = f"delta state: {show(entry['delta'])}"
+    if entry["by"] == "Python" and len(delta) > width:
+        delta = delta[:width] + " ..."
+    print(f"       | {color}{delta}{RESET}")
+
+
+def print_trace(trace: list[dict]) -> None:
     for entry in trace:
-        color = RED if entry["by"] == "Python" else PURPLE
-        print(f"{color}{entry['by']:>6} | {entry['line']}{RESET}")
-        if entry["by"] == "LM" and not entry["usable"]:
-            print(f"       | LM output not usable ({entry['lm_error']}): {entry['lm_output']}")
-            continue
-        delta = f"delta state: {show(entry['delta'])}"
-        if entry["by"] == "Python" and len(delta) > width:
-            delta = delta[:width] + " ..."
-        print(f"       | {color}{delta}{RESET}")
+        print_entry(entry)

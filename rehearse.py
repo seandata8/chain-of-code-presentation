@@ -5,6 +5,7 @@ Usage: uv run rehearse.py
 
 from datetime import date
 
+from checks import check_coc, check_cot, summary
 from ground_truth import answer
 from methods import METHODS, is_correct
 
@@ -29,6 +30,8 @@ DATES = [
 
 def main():
     rows = []
+    all_checks = []  # every Chain of Thought step, for a total at the end
+    all_facts = []  # every Chain of Code birth date
     for d, note in DATES:
         truth = answer(d)
         truth_names = " / ".join(name for name, _ in truth)
@@ -42,9 +45,19 @@ def main():
             if result.get("error"):
                 print(f"    Execution stopped: {result['error']}")
             row.append(f"{mark} {result['answer']}")
-        rows.append(row)
+            if title == "Chain of Thought":
+                checks = check_cot(result["raw"], d)
+                all_checks += checks
+                cot_steps = summary(checks)
+                print(f"    Steps: {cot_steps}")
+            if title == "Chain of Code":
+                facts = check_coc(result["trace"])
+                all_facts += facts
+                coc_facts = summary(facts)
+                print(f"    Birth dates: {coc_facts}")
+        rows.append(row + [cot_steps, coc_facts])
 
-    headers = ["Date", "Correct", "Direct", "Chain of Thought", "Chain of Code"]
+    headers = ["Date", "Correct", "Direct", "Chain of Thought", "Chain of Code", "CoT steps right", "CoC birth dates right"]
     widths = [max(len(str(r[i])) for r in rows + [headers]) for i in range(len(headers))]
     print("\n\nSUMMARY")
     for r in [headers] + rows:
@@ -52,6 +65,8 @@ def main():
     for i, (title, _) in enumerate(METHODS):
         score = sum(r[2 + i].startswith("✓") for r in rows)
         print(f"{title}: {score}/{len(rows)} correct")
+    print(f"Chain of Thought steps, all dates: {summary(all_checks)}")
+    print(f"Chain of Code birth dates, all dates: {summary(all_facts)}")
 
 
 if __name__ == "__main__":
