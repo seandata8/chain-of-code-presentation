@@ -60,7 +60,7 @@ I’ve been to Mumbai, London, Washington, Grand Canyon, Baltimore, Longsheng, G
 ![](images/prompt-direct-answer.png)
 
 ::: {.small-text}
-**Direct Answer**
+[Direct Answer]{.method-header}
 
 - Model answers immediately, no reasoning
 - Right only 10%
@@ -69,7 +69,7 @@ I’ve been to Mumbai, London, Washington, Grand Canyon, Baltimore, Longsheng, G
 ![](images/prompt-chain-of-thought.png)
 
 ::: {.small-text}
-**Chain-of-Thought**
+[Chain-of-Thought]{.method-header}
 
 - Model reasons step-by-step in words
 - Still right only 10%
@@ -80,7 +80,7 @@ I’ve been to Mumbai, London, Washington, Grand Canyon, Baltimore, Longsheng, G
 ![](images/prompt-chain-of-code.png)
 
 ::: {.small-text}
-**Chain-of-Code**
+[Chain-of-Code]{.method-header}
 
 - Prompt includes pseudo-code examples
 - Model writes code to solve it
@@ -158,13 +158,13 @@ Qwen2.5-Coder 7B (base model) on a laptop · three worked examples per method
 :::
 
 :::: {.columns}
-::: {.column width="50%" style="text-align: center; font-size: 60%;"}
+::: {.column .chart-column width="50%"}
 **Correct answers, 30 random dates**
 
 ![](images/demo-answers.png){width="92%"}
 :::
 
-::: {.column width="50%" style="text-align: center; font-size: 60%;"}
+::: {.column .chart-column width="50%"}
 **Steps correct: facts vs. math**
 
 ![](images/demo-steps.png){width="92%"}

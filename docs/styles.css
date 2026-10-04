@@ -66,3 +66,15 @@
   font-size: 0.6em;
   bottom: 5px;
 }
+
+/* A column holding a chart with a small centered heading: ::: {.column .chart-column width="50%"} */
+.reveal .chart-column {
+  text-align: center;
+  font-size: 60%;
+}
+
+/* Bold header above a method's bullets, one size up from the small text: [Name]{.method-header} */
+.reveal .method-header {
+  font-weight: bold;
+  font-size: 1.2em;
+}
