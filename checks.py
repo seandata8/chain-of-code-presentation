@@ -85,6 +85,12 @@ def check_coc(trace: list[dict]) -> list[tuple[str, str, bool]]:
     return checks
 
 
+def count(checks: list[tuple[str, str, bool]], kind: str) -> tuple[int, int]:
+    """(number right, number checked) for one kind of claim."""
+    found = [ok for k, _, ok in checks if k == kind]
+    return sum(found), len(found)
+
+
 def summary(checks: list[tuple[str, str, bool]]) -> str:
     """E.g. 'math 1/5, facts 2/2, choices 0/2'."""
     parts = []
