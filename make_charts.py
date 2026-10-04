@@ -1,7 +1,12 @@
-"""Draw the two results bar charts for the slides (data from Li et al., ICML 2024).
+"""Draw the results bar charts for the slides.
+
+The first two use data from Li et al., ICML 2024; the demo charts read our
+own results from results/random-30-seed-2026.csv (made by rehearse.py).
 
 Usage: uv run --with matplotlib make_charts.py
 """
+
+import csv
 
 import matplotlib.pyplot as plt
 
@@ -71,6 +76,40 @@ def ablation_chart():
     fig.savefig("images/results-ablation.png", transparent=True)
 
 
+def demo_charts(path="results/random-30-seed-2026.csv"):
+    """Our demo on 30 random dates: answers right, and steps right."""
+    with open(path) as f:
+        rows = list(csv.DictReader(f))
+
+    def total(column):
+        return sum(int(r[column]) for r in rows)
+
+    def bars(items, filename):
+        fig, ax = plt.subplots(figsize=(6, 4.6), dpi=200)
+        for x, (label, right, out_of, is_coc) in enumerate(items):
+            percent = round(100 * right / out_of)
+            ax.bar(x, percent, width=0.7, color=BLUE if is_coc else GRAY)
+            ax.text(x, percent + 2, f"{percent}%\n({right}/{out_of})", ha="center", va="bottom",
+                    fontsize=17, fontweight="bold" if is_coc else "normal")
+        ax.set_xticks(range(len(items)), [label for label, *_ in items])
+        ax.tick_params(axis="x", length=0, labelsize=18, labelcolor=INK)
+        ax.set_ylim(0, 125)
+        ax.set_yticks([])
+        clean_axes(ax)
+        fig.tight_layout()
+        fig.savefig(f"images/{filename}", transparent=True)
+
+    n = len(rows)
+    bars([("Direct", total("Direct correct"), n, False),
+          ("CoT", total("Chain of Thought correct"), n, False),
+          ("CoC", total("Chain of Code correct"), n, True)], "demo-answers.png")
+    bars([("CoT\nfacts", total("CoT fact right"), total("CoT fact checked"), False),
+          ("CoT\nmath", total("CoT math right"), total("CoT math checked"), False),
+          ("CoT\nchoices", total("CoT choice right"), total("CoT choice checked"), False),
+          ("CoC\nfacts", total("CoC birthdays right"), total("CoC birthdays checked"), True)], "demo-steps.png")
+
+
 if __name__ == "__main__":
     task_type_chart()
     ablation_chart()
+    demo_charts()

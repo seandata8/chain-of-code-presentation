@@ -263,18 +263,51 @@
 <aside><div>
 <p><a href="https://arxiv.org/abs/2312.04474">Data from Table 2, Li et al., ICML 2024</a></p>
 </div></aside></section>
-<section id="the-idea" class="slide level2">
-<h2>The idea</h2>
-<p>Text for your second slide.</p>
+<section id="how-does-it-actually-work-birthday-demo" class="slide level2 small-title">
+<h2>How does it actually work? Birthday Demo</h2>
+<div style="font-size: 60%;">
+<blockquote>
+<p>Of the birthdays of Banting, Curie, Darwin, Einstein, Gauss, Hawking, Lovelace, Rutherford, Tesla, and Turing that are at least 100 days before or after <strong>15 March 2027</strong>, whose is closest?</p>
+</blockquote>
+<p>Qwen2.5-Coder 7B (base model) on a laptop · three worked examples per method</p>
+</div>
+<div class="columns">
+<div class="column" style="text-align: center; font-size: 60%;">
+<p><strong>Correct answers, 30 random dates</strong></p>
+<p><img data-src="images/demo-answers.png" style="width:92.0%"></p>
+</div><div class="column" style="text-align: center; font-size: 60%;">
+<p><strong>Steps correct: facts vs.&nbsp;math</strong></p>
+<p><img data-src="images/demo-steps.png" style="width:92.0%"></p>
+</div></div>
 </section>
+<section id="summary-and-conclusion" class="slide level2">
+<h2>Summary and Conclusion</h2>
+<div class="middle" style="font-size: 85%;">
+<ul>
+<li>LLMs know facts, but are shaky at exact math</li>
+<li>Chain of Code: the LM writes code; Python runs what it can, the LM emulates the rest</li>
+<li>Paper: 84% on BIG-Bench Hard, vs.&nbsp;72% for Chain of Thought</li>
+<li>Our demo (7B model): 30/30 vs.&nbsp;3/30, with the same facts, but Python doing the math</li>
+<li>Limit: works best when the examples come from the same kind of problem</li>
+</ul>
+</div>
+
+<aside><div>
+<p><a href="https://arxiv.org/abs/2312.04474">Paper results: Table 1 from Li et al., ICML 2024</a></p>
+</div></aside></section>
 <section id="references" class="slide level2">
 <h2>References</h2>
+<div class="references" style="font-size: 60%;">
 <p>Li, C., Liang, J., Zeng, A., Chen, X., Hausman, K., Sadigh, D., Levine, S., Fei-Fei, L., Xia, F., &amp; Ichter, B. (2024). <em>Chain of Code: Reasoning with a Language Model-Augmented Code Emulator.</em> Proceedings of the 41st International Conference on Machine Learning (ICML), PMLR 235.</p>
 <ul>
 <li>Paper: <a href="https://arxiv.org/abs/2312.04474" class="uri">https://arxiv.org/abs/2312.04474</a></li>
 <li>Project page: <a href="https://chain-of-code.github.io/" class="uri">https://chain-of-code.github.io/</a></li>
 </ul>
+<p>Suzgun, M., Scales, N., Schärli, N., Gehrmann, S., et al.&nbsp;(2022). <em>Challenging BIG-Bench Tasks and Whether Chain-of-Thought Can Solve Them.</em> arXiv:2210.09261. <a href="https://arxiv.org/abs/2210.09261" class="uri">https://arxiv.org/abs/2210.09261</a></p>
+<p>Hui, B., Yang, J., Cui, Z., Yang, J., et al.&nbsp;(2024). <em>Qwen2.5-Coder Technical Report.</em> arXiv:2409.12186. <a href="https://arxiv.org/abs/2409.12186" class="uri">https://arxiv.org/abs/2409.12186</a><br>
+Demo model: qwen2.5-coder:7b-base via Ollama, <a href="https://ollama.com/library/qwen2.5-coder" class="uri">https://ollama.com/library/qwen2.5-coder</a></p>
 <p>Fan, J. (2024, July 25). Post on X about frontier models failing “9.11 vs 9.9”. <a href="https://x.com/DrJimFan/status/1816521330298356181" class="uri">https://x.com/DrJimFan/status/1816521330298356181</a></p>
+</div>
 
 </section>
     </div>

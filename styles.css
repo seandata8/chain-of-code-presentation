@@ -47,3 +47,12 @@
 .reveal .small-text > p {
   margin-bottom: 0.2em;
 }
+
+/* References: hanging indent for each entry, and indented sub-bullets: ::: {.references} */
+.reveal .references p {
+  padding-left: 2em;
+  text-indent: -2em;
+}
+.reveal .references ul {
+  margin-left: 3em;
+}

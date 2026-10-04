@@ -140,12 +140,45 @@ BIG-Bench Hard: 23 tasks that are hard for LLMs. Examples:
 [Data from Table 2, Li et al., ICML 2024](https://arxiv.org/abs/2312.04474)
 :::
 
-## The idea
+## How does it actually work? Birthday Demo {.small-title}
 
-Text for your second slide.
+::: {style="font-size: 60%;"}
+> Of the birthdays of Banting, Curie, Darwin, Einstein, Gauss, Hawking, Lovelace, Rutherford, Tesla, and Turing that are at least 100 days before or after **15 March 2027**, whose is closest?
+
+Qwen2.5-Coder 7B (base model) on a laptop · three worked examples per method
+:::
+
+:::: {.columns}
+::: {.column width="50%" style="text-align: center; font-size: 60%;"}
+**Correct answers, 30 random dates**
+
+![](images/demo-answers.png){width="92%"}
+:::
+
+::: {.column width="50%" style="text-align: center; font-size: 60%;"}
+**Steps correct: facts vs. math**
+
+![](images/demo-steps.png){width="92%"}
+:::
+::::
+
+## Summary and Conclusion
+
+::: {.middle style="font-size: 85%;"}
+- LLMs know facts, but are shaky at exact math
+- Chain of Code: the LM writes code; Python runs what it can, the LM emulates the rest
+- Paper: 84% on BIG-Bench Hard, vs. 72% for Chain of Thought
+- Our demo (7B model): 30/30 vs. 3/30, with the same facts, but Python doing the math
+- Limit: works best when the examples come from the same kind of problem
+:::
+
+::: aside
+[Paper results: Table 1 from Li et al., ICML 2024](https://arxiv.org/abs/2312.04474)
+:::
 
 ## References
 
+::: {.references style="font-size: 60%;"}
 Li, C., Liang, J., Zeng, A., Chen, X., Hausman, K., Sadigh, D., Levine, S., Fei-Fei, L., Xia, F., & Ichter, B. (2024).
 *Chain of Code: Reasoning with a Language Model-Augmented Code Emulator.*
 Proceedings of the 41st International Conference on Machine Learning (ICML), PMLR 235.
@@ -153,4 +186,13 @@ Proceedings of the 41st International Conference on Machine Learning (ICML), PML
 - Paper: <https://arxiv.org/abs/2312.04474>
 - Project page: <https://chain-of-code.github.io/>
 
+Suzgun, M., Scales, N., Schärli, N., Gehrmann, S., et al. (2022).
+*Challenging BIG-Bench Tasks and Whether Chain-of-Thought Can Solve Them.*
+arXiv:2210.09261. <https://arxiv.org/abs/2210.09261>
+
+Hui, B., Yang, J., Cui, Z., Yang, J., et al. (2024).
+*Qwen2.5-Coder Technical Report.* arXiv:2409.12186. <https://arxiv.org/abs/2409.12186>\
+Demo model: qwen2.5-coder:7b-base via Ollama, <https://ollama.com/library/qwen2.5-coder>
+
 Fan, J. (2024, July 25). Post on X about frontier models failing "9.11 vs 9.9". <https://x.com/DrJimFan/status/1816521330298356181>
+:::
