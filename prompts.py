@@ -1,14 +1,17 @@
 """Few-shot prompts for Direct, Chain of Thought, and Chain of Code.
 
-Every example answer (and every date and day count in the reasoning) is
-computed with ground_truth.py, so the examples are guaranteed correct.
+The worked examples ask about five other scientists, so they don't give
+away any of the ten birthdays in the real question. Every example answer
+(and every date and day count in the reasoning) is computed with
+ground_truth.py, so the examples are guaranteed correct.
 """
 
 from datetime import date, timedelta
 
-from ground_truth import MIN_DAYS, SCIENTISTS, answer, birthdays
+from ground_truth import EXAMPLE_BIRTH_DATES, MIN_DAYS, SCIENTISTS, answer, birthdays
 
-EXAMPLE_DATES = [date(2009, 6, 12), date(2005, 9, 15), date(2024, 8, 1)]
+EXAMPLE_DATES = [date(2009, 6, 12), date(2020, 5, 1), date(2024, 8, 1)]
+EXAMPLE_SCIENTISTS = list(EXAMPLE_BIRTH_DATES)
 
 
 def fmt(d: date) -> str:
@@ -16,21 +19,21 @@ def fmt(d: date) -> str:
     return f"{d.day} {d:%B %Y}"
 
 
-def question(d: date) -> str:
+def question(d: date, names: list[str] = SCIENTISTS) -> str:
     return (
-        f"Q: Of the birthdays of {', '.join(SCIENTISTS[:-1])}, and {SCIENTISTS[-1]} "
+        f"Q: Of the birthdays of {', '.join(names[:-1])}, and {names[-1]} "
         f"that are at least {MIN_DAYS} days before or after {fmt(d)}, "
         f"whose is closest to {fmt(d)}?"
     )
 
 
 def direct_example(d: date) -> str:
-    name = answer(d)[0][0]
-    return f"{question(d)}\nA: {name}"
+    name = answer(d, EXAMPLE_BIRTH_DATES)[0][0]
+    return f"{question(d, EXAMPLE_SCIENTISTS)}\nA: {name}"
 
 
 def cot_example(d: date) -> str:
-    days = [b for year in (d.year - 1, d.year, d.year + 1) for b in birthdays(year)]
+    days = [b for year in (d.year - 1, d.year, d.year + 1) for b in birthdays(year, EXAMPLE_BIRTH_DATES)]
     too_late = d - timedelta(days=MIN_DAYS)
     too_early = d + timedelta(days=MIN_DAYS)
     before_name, before_day = max((b for b in days if b[1] <= too_late), key=lambda b: b[1])
@@ -38,10 +41,10 @@ def cot_example(d: date) -> str:
     before_days = (d - before_day).days
     after_days = (after_day - d).days
     name = before_name if before_days < after_days else after_name
-    assert before_days != after_days and [name] == [n for n, _ in answer(d)]
+    assert before_days != after_days and [name] == [n for n, _ in answer(d, EXAMPLE_BIRTH_DATES)]
     smaller, larger = sorted([before_days, after_days])
     return "\n".join([
-        question(d),
+        question(d, EXAMPLE_SCIENTISTS),
         "A: Let's think step by step.",
         f"{MIN_DAYS} days before {fmt(d)} is {fmt(too_late)}, "
         f"and {MIN_DAYS} days after is {fmt(too_early)}.",
@@ -54,10 +57,10 @@ def cot_example(d: date) -> str:
     ])
 
 
-def coc_code(d: date) -> str:
+def coc_code(d: date, names: list[str] = SCIENTISTS) -> str:
     return f"""from datetime import date
 target = date({d.year}, {d.month}, {d.day})
-scientists = {SCIENTISTS!r}
+scientists = {names!r}
 born = {{}}
 for name in scientists:
     birth_date = get_birth_date(name)
@@ -71,7 +74,7 @@ answer = min(far_enough, key=lambda b: abs((b[1] - target).days))[0]"""
 
 
 def coc_example(d: date) -> str:
-    return f"{question(d)}\n{coc_code(d)}"
+    return f"{question(d, EXAMPLE_SCIENTISTS)}\n{coc_code(d, EXAMPLE_SCIENTISTS)}"
 
 
 def build_prompt(example, d: date) -> str:

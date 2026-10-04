@@ -3,8 +3,9 @@
 Usage: uv run demo.py                    (asks for a date)
        uv run demo.py "15 March 2027"    (or 2027-03-15)
 
-For each method it shows the prompt, waits for Enter, then shows the
-model's output and whether it is right. A summary comes at the end.
+It shows the correct answer first. Then, for each method, it shows the
+prompt, waits for Enter, then shows the model's output and whether it is
+right. A summary comes at the end.
 """
 
 import sys
@@ -45,10 +46,17 @@ def pause(message: str) -> None:
     input(f"\n{BOLD}[Press Enter to {message}]{RESET}")
 
 
+def print_truth(truth: list[tuple[str, date]], d: date) -> None:
+    for name, day in truth:
+        print(f"Correct answer (computed in Python): {name}, {fmt(day)}, {abs((day - d).days)} days away")
+
+
 def main():
     d = ask_for_date()
     print(f"\n{question(d)}")
     truth = answer(d)
+    print()
+    print_truth(truth, d)
 
     results = []
     for title, run in METHODS:
@@ -75,8 +83,7 @@ def main():
 
     pause("see the results")
     print(f"\n{BOLD}===== Results for {fmt(d)} ====={RESET}")
-    for name, day in truth:
-        print(f"Correct answer (computed in Python): {name}, {fmt(day)}, {abs((day - d).days)} days away")
+    print_truth(truth, d)
     for title, model_answer, mark in results:
         print(f"  {mark} {title:<17} {model_answer}")
 

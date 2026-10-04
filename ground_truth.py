@@ -21,22 +21,32 @@ BIRTH_DATES = {
 }
 SCIENTISTS = list(BIRTH_DATES)  # alphabetical by surname, so the order gives nothing away
 
+# Five other scientists, used only in the worked examples, so the examples
+# don't give away any of the ten birthdays above. Also checked against Wikidata.
+EXAMPLE_BIRTH_DATES = {
+    "Thomas Edison": date(1847, 2, 11),
+    "Rosalind Franklin": date(1920, 7, 25),
+    "James Clerk Maxwell": date(1831, 6, 13),
+    "Louis Pasteur": date(1822, 12, 27),
+    "Max Planck": date(1858, 4, 23),
+}
+
 FIRST_YEAR = 1943  # every scientist has been born by the previous year
 MIN_DAYS = 100
 
 
-def birthdays(year: int) -> list[tuple[str, date]]:
+def birthdays(year: int, people: dict = BIRTH_DATES) -> list[tuple[str, date]]:
     """Each scientist's birthday in the given year."""
-    return [(name, date(year, born.month, born.day)) for name, born in BIRTH_DATES.items()]
+    return [(name, date(year, born.month, born.day)) for name, born in people.items()]
 
 
-def answer(d: date) -> list[tuple[str, date]]:
+def answer(d: date, people: dict = BIRTH_DATES) -> list[tuple[str, date]]:
     """Closest birthday at least 100 days from d (two if there is a tie)."""
     if d.year < FIRST_YEAR:
         raise ValueError(f"Dates before {FIRST_YEAR} are not supported.")
     candidates = []
     for year in (d.year - 1, d.year, d.year + 1):
-        for name, day in birthdays(year):
+        for name, day in birthdays(year, people):
             distance = abs((day - d).days)
             if distance >= MIN_DAYS:
                 candidates.append((distance, name, day))
