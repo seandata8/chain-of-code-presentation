@@ -30,12 +30,12 @@ def task_type_chart():
             x = g * 4 + m
             ax.bar(x, score, width=0.8, color=BLUE if method == "CoC" else GRAY)
             ax.text(x, score + 1.5, f"{score}%", ha="center", va="bottom",
-                    fontsize=16, fontweight="bold" if method == "CoC" else "normal")
+                    fontsize=17, fontweight="bold" if method == "CoC" else "normal")
             positions.append(x)
             labels.append(method)
-        ax.text(g * 4 + 1, -17, group, ha="center", fontsize=17, color=INK)
+        ax.text(g * 4 + 1, -17, group, ha="center", fontsize=18, color=INK)
     ax.set_xticks(positions, labels)
-    ax.tick_params(axis="x", length=0, labelsize=15)
+    ax.tick_params(axis="x", length=0, labelsize=16)
     ax.set_ylim(0, 105)
     ax.set_yticks([])
     clean_axes(ax)
