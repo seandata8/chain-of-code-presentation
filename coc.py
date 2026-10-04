@@ -198,20 +198,21 @@ def execute(question: str, code: str, stream: bool = False):
     return env.get("answer"), trace, error
 
 
-def print_entry(entry: dict, width: int = 160) -> None:
+def print_entry(entry: dict, width: int = 140) -> None:
     """One trace line: Python in red, LM in purple, as in the paper's figures.
 
-    The LM's output is shown in full; long Python deltas are cut to `width`.
+    The LM's output is shown in full; a long Python delta state is cut so
+    its line is at most `width` characters, ending in "...".
     """
     color = RED if entry["by"] == "Python" else PURPLE
     print(f"{color}{entry['by']:>6} | {entry['line']}{RESET}")
     if entry["by"] == "LM" and not entry["usable"]:
         print(f"       | LM output not usable ({entry['lm_error']}): {entry['lm_output']}")
         return
-    delta = f"delta state: {show(entry['delta'])}"
-    if entry["by"] == "Python" and len(delta) > width:
-        delta = delta[:width] + " ..."
-    print(f"       | {color}{delta}{RESET}")
+    line = f"       | delta state: {show(entry['delta'])}"
+    if entry["by"] == "Python" and len(line) > width:
+        line = line[:width - 3] + "..."
+    print(f"{color}{line}{RESET}")
 
 
 def print_trace(trace: list[dict]) -> None:
