@@ -49,22 +49,19 @@ def task_type_chart():
 
 
 def ablation_chart():
-    """Table 2: average BIG-Bench Hard accuracy for each way of running the code."""
+    """Table 2: average BIG-Bench Hard accuracy with Python, the LM, or both running the code."""
     rows = [
-        ("Interweave (line by line)", 84, True),
-        ("Try Python, else LM traces state", 82, True),
-        ("Try Python, else LM answers", 80, True),
-        ("LM only, traces state", 63, False),
+        ("Python + LM (interweave)", 84, True),
         ("LM only", 57, False),
         ("Python only", 48, False),
     ]
-    fig, ax = plt.subplots(figsize=(9, 4.6), dpi=200)
+    fig, ax = plt.subplots(figsize=(9, 3.2), dpi=200)
     for i, (label, score, both) in enumerate(rows):
-        ax.barh(i, score, height=0.62, color=BLUE if both else GRAY)
-        ax.text(score + 1, i, f"{score}%", va="center", fontsize=16,
+        ax.barh(i, score, height=0.6, color=BLUE if both else GRAY)
+        ax.text(score + 1, i, f"{score}%", va="center", fontsize=18,
                 fontweight="bold" if i == 0 else "normal")
     ax.set_yticks(range(len(rows)), [label for label, _, _ in rows])
-    ax.tick_params(axis="y", length=0, labelsize=15, labelcolor=INK)
+    ax.tick_params(axis="y", length=0, labelsize=18, labelcolor=INK)
     ax.invert_yaxis()
     ax.set_xlim(0, 100)
     ax.set_xticks([])
