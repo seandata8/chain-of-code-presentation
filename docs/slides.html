@@ -147,7 +147,7 @@
 <h2>The problem</h2>
 <div class="middle">
 <div class="indent">
-<p>In 2024, LLMs were great with language, but shaky with math.</p>
+<p>In 2024, LLMs were great with language, but shaky with simple math.</p>
 </div>
 <blockquote>
 <p>Which is bigger: 9.11 or 9.9?</p>
@@ -178,6 +178,7 @@
 <div class="column" style="width:50%;">
 <p><img data-src="images/prompt-direct-answer.png"></p>
 <div class="small-text">
+<p><strong>Direct Answer</strong></p>
 <ul>
 <li>Model answers immediately, no reasoning</li>
 <li>Right only 10%</li>
@@ -185,6 +186,7 @@
 </div>
 <p><img data-src="images/prompt-chain-of-thought.png"></p>
 <div class="small-text">
+<p><strong>Chain-of-Thought</strong></p>
 <ul>
 <li>Model reasons step-by-step in words</li>
 <li>Still right only 10%</li>
@@ -193,8 +195,11 @@
 </div><div class="column" style="width:50%;">
 <p><img data-src="images/prompt-chain-of-code.png"></p>
 <div class="small-text">
+<p><strong>Chain-of-Code</strong></p>
 <ul>
+<li>Prompt includes pseudo-code examples</li>
 <li>Model writes code to solve it</li>
+<li>Harness runs code in Python or LM</li>
 <li>Lines in red evaluated with Python</li>
 <li>Lines in purple evaluated with an LLM</li>
 <li><strong>Right 100% of the time</strong></li>

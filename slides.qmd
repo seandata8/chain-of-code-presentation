@@ -25,7 +25,7 @@ International Conference on Machine Learning (ICML) 2024
 
 ::: {.middle}
 ::: {.indent}
-In 2024, LLMs were great with language, but shaky with math.
+In 2024, LLMs were great with language, but shaky with simple math.
 :::
 
 > Which is bigger: 9.11 or 9.9?
@@ -60,6 +60,8 @@ I’ve been to Mumbai, London, Washington, Grand Canyon, Baltimore, Longsheng, G
 ![](images/prompt-direct-answer.png)
 
 ::: {.small-text}
+**Direct Answer**
+
 - Model answers immediately, no reasoning
 - Right only 10%
 :::
@@ -67,6 +69,8 @@ I’ve been to Mumbai, London, Washington, Grand Canyon, Baltimore, Longsheng, G
 ![](images/prompt-chain-of-thought.png)
 
 ::: {.small-text}
+**Chain-of-Thought**
+
 - Model reasons step-by-step in words
 - Still right only 10%
 :::
@@ -76,7 +80,11 @@ I’ve been to Mumbai, London, Washington, Grand Canyon, Baltimore, Longsheng, G
 ![](images/prompt-chain-of-code.png)
 
 ::: {.small-text}
+**Chain-of-Code**
+
+- Prompt includes pseudo-code examples
 - Model writes code to solve it
+- Harness runs code in Python or LM
 - Lines in red evaluated with Python
 - Lines in purple evaluated with an LLM
 - **Right 100% of the time**

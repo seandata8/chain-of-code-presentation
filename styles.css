@@ -47,6 +47,9 @@
 .reveal .small-text > p {
   margin-bottom: 0.2em;
 }
+.reveal .small-text > p + ul {
+  margin-top: 0;
+}
 
 /* References: hanging indent for each entry, and indented sub-bullets: ::: {.references} */
 .reveal .references p {
@@ -55,4 +58,11 @@
 }
 .reveal .references ul {
   margin-left: 3em;
+}
+
+/* Source credits at the bottom of slides (::: aside): a bit smaller and lower than Quarto's default */
+.reveal .slide aside,
+.reveal .slide div.aside {
+  font-size: 0.6em;
+  bottom: 5px;
 }
