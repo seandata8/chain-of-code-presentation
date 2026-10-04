@@ -54,10 +54,10 @@ def main():
                 facts = check_coc(result["trace"])
                 all_facts += facts
                 coc_facts = summary(facts)
-                print(f"    Birth dates: {coc_facts}")
+                print(f"    Birthdays: {coc_facts}")
         rows.append(row + [cot_steps, coc_facts])
 
-    headers = ["Date", "Correct", "Direct", "Chain of Thought", "Chain of Code", "CoT steps right", "CoC birth dates right"]
+    headers = ["Date", "Correct", "Direct", "Chain of Thought", "Chain of Code", "CoT steps right", "CoC birthdays right"]
     widths = [max(len(str(r[i])) for r in rows + [headers]) for i in range(len(headers))]
     print("\n\nSUMMARY")
     for r in [headers] + rows:
@@ -66,7 +66,7 @@ def main():
         score = sum(r[2 + i].startswith("✓") for r in rows)
         print(f"{title}: {score}/{len(rows)} correct")
     print(f"Chain of Thought steps, all dates: {summary(all_checks)}")
-    print(f"Chain of Code birth dates, all dates: {summary(all_facts)}")
+    print(f"Chain of Code birthdays, all dates: {summary(all_facts)}")
 
 
 if __name__ == "__main__":

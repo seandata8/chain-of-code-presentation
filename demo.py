@@ -17,7 +17,13 @@ from methods import METHODS, is_correct
 from prompts import coc_prompt, cot_prompt, direct_prompt, fmt, question
 
 PROMPTS = {"Direct": direct_prompt, "Chain of Thought": cot_prompt, "Chain of Code": coc_prompt}
-BOLD, RESET = "\033[1m", "\033[0m"
+# Orange, not red, for wrong answers: red already means "Python ran this line" in the trace.
+BOLD, GREEN, ORANGE, RESET = "\033[1m", "\033[32m", "\033[38;5;208m", "\033[0m"
+
+
+def marked(ok: bool, text: str) -> str:
+    """Text with a green ✓ if ok, else an orange ✗."""
+    return f"{GREEN}✓ {text}{RESET}" if ok else f"{ORANGE}✗ {text}{RESET}"
 
 
 def parse_date(text: str) -> date | None:
@@ -67,25 +73,25 @@ def main():
         result = run(d, stream=True)  # prints the output (and CoC trace) as it is generated
         if result.get("error"):
             print(f"Execution stopped: {result['error']}")
-        mark = "✓" if is_correct(result["answer"], truth) else "✗"
-        print(f"\n{BOLD}{title} answer: {result['answer']}  {mark}{RESET}")
+        answer_ok = is_correct(result["answer"], truth)
+        print("\n" + BOLD + marked(answer_ok, f"{title} answer: {result['answer']}"))
         if title == "Chain of Thought":
             checks = check_cot(result["raw"], d)
             print(f"\nChecking each step ({summary(checks)}):")
         elif title == "Chain of Code":
             checks = check_coc(result["trace"])
-            print(f"\nChecking the LM's birth dates ({summary(checks)}):")
+            print(f"\nChecking the LM's birthdays ({summary(checks)}):")
         else:
             checks = []
         for kind, claim, ok in checks:
-            print(f"  {'✓' if ok else '✗'} {kind:<6} {claim}")
-        results.append((title, result["answer"], mark))
+            print(f"  {marked(ok, f'{kind:<6} {claim}')}")
+        results.append((title, result["answer"], answer_ok))
 
     pause("see the results")
     print(f"\n{BOLD}===== Results for {fmt(d)} ====={RESET}")
     print_truth(truth, d)
-    for title, model_answer, mark in results:
-        print(f"  {mark} {title:<17} {model_answer}")
+    for title, model_answer, ok in results:
+        print(f"  {marked(ok, f'{title:<17} {model_answer}')}")
 
 
 if __name__ == "__main__":

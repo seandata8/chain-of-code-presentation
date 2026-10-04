@@ -4,8 +4,8 @@ Chain of Thought: the model follows the template of the examples, so each
 claim sits in a known sentence. Each step is checked using the model's own
 earlier numbers, so one early mistake isn't counted again in later steps.
 
-Chain of Code: the facts are the birth dates the LM supplied, read from the
-`born` dictionary the program actually used.
+Chain of Code: the facts are the birthdays (month and day) the LM supplied,
+read from the `born` dictionary the program actually used.
 """
 
 import re
@@ -64,7 +64,10 @@ def check_cot(raw: str, d: date) -> list[tuple[str, str, bool]]:
 
 
 def check_coc(trace: list[dict]) -> list[tuple[str, str, bool]]:
-    """Check each birth date in the program's final `born` dictionary."""
+    """Check each birthday (month and day) in the program's final `born` dictionary.
+
+    Only the month and day matter to the answer, so a wrong birth year isn't counted.
+    """
     born = {}
     for entry in trace:
         if entry["delta"] and isinstance(entry["delta"].get("born"), dict):
@@ -74,13 +77,11 @@ def check_coc(trace: list[dict]) -> list[tuple[str, str, bool]]:
         given = born.get(name)
         if not isinstance(given, date):
             checks.append(("fact", f"{name}: not looked up", False))
-        elif given == right:
-            checks.append(("fact", f"{name} born {fmt(given)}", True))
         elif (given.month, given.day) == (right.month, right.day):
-            checks.append(("fact", f"{name} born {fmt(given)} (correct: {fmt(right)}; "
-                                   f"only the year is wrong, which doesn't change the answer)", False))
+            checks.append(("fact", f"{name}'s birthday is {given.day} {given:%B}", True))
         else:
-            checks.append(("fact", f"{name} born {fmt(given)} (correct: {fmt(right)})", False))
+            checks.append(("fact", f"{name}'s birthday is {given.day} {given:%B} "
+                                   f"(correct: {right.day} {right:%B})", False))
     return checks
 
 
