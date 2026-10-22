@@ -19,6 +19,15 @@ METHODS = [("Direct", run_direct), ("Chain of Thought", run_cot_lookups), ("Chai
 PROMPTS = {"Direct": direct_prompt, "Chain of Thought": cot_lookup_prompt, "Chain of Code": coc_prompt}
 
 
+def spaced(text: str) -> str:
+    """For display only: a blank line before and after each "In order through the year" line.
+
+    The model gets the prompt without them, since a blank line is its stop sequence.
+    """
+    return "\n".join(f"\n{line}\n" if line.startswith("In order through the year:") else line
+                     for line in text.split("\n"))
+
+
 def main():
     d = ask_for_date()
     print(f"\n{blue_questions(question(d))}")
@@ -29,7 +38,7 @@ def main():
     results = []
     for title, run in METHODS:
         pause(f"see the {title} prompt")
-        print(f"\n{BOLD}===== {title}: prompt ====={RESET}\n{blue_questions(PROMPTS[title](d))}")
+        print(f"\n{BOLD}===== {title}: prompt ====={RESET}\n{blue_questions(spaced(PROMPTS[title](d)))}")
         pause(f"run {title}")
         print(f"\n{BOLD}===== {title}: model output ====={RESET}")
         result = run(d, stream=True)  # prints the output (and CoC trace) as it is generated
