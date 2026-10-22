@@ -192,7 +192,7 @@ Dec 2023</p>
 <div style="text-align: center; font-size: 60%;">
 <p>Chain of Code tested GPT-3.5, GPT-4, and PaLM 2.</p>
 </div>
-<div class="columns">
+<div class="columns" style="display: block; margin-top: 2em;">
 <div class="column small-text" style="width:50%;">
 <p><span class="method-header">Chain of Thought</span> (Wei et al., 2022)</p>
 <ul>
@@ -253,9 +253,8 @@ Dec 2023</p>
 <ul>
 <li>Prompt includes pseudo-code examples</li>
 <li>Model writes code to solve it</li>
-<li>Harness runs code in Python or LM</li>
 <li>Lines in red evaluated with Python</li>
-<li>Lines in purple evaluated with an LLM</li>
+<li>Lines in purple: the LMulator (the LLM pretends to be Python)</li>
 <li><strong>Right 100% of the time</strong></li>
 </ul>
 </div>
@@ -306,8 +305,8 @@ Dec 2023</p>
 <aside><div>
 <p><a href="https://arxiv.org/abs/2312.04474">Data from Figure 4 and Table A1, Li et al., ICML 2024</a></p>
 </div></aside></section>
-<section id="both-python-and-the-lm-are-needed" class="slide level2 small-title">
-<h2>Both Python and the LM Are Needed</h2>
+<section id="both-python-and-the-llm-are-needed" class="slide level2 small-title">
+<h2>Both Python and the LLM Are Needed</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/results-ablation.png" class="quarto-figure quarto-figure-center" style="width:95.0%"></p>
@@ -316,7 +315,7 @@ Dec 2023</p>
 <div style="display: table; margin: -2em auto 0; font-size: 80%;">
 <ul>
 <li>Average accuracy on BIG-Bench Hard.</li>
-<li><span style="color: #2a78d6;">Blue</span>: uses both Python and the LM.</li>
+<li><span style="color: #2a78d6;">Blue</span>: uses both Python and the LLM.</li>
 </ul>
 </div>
 
@@ -342,28 +341,32 @@ Dec 2023</p>
 </section>
 <section id="impact-of-chain-of-code" class="slide level2">
 <h2>Impact of Chain of Code</h2>
-<div class="middle" style="font-size: 85%;">
+<div class="middle side-logos" style="font-size: 85%;">
 <ul>
 <li>Oral presentation at ICML 2024</li>
 <li>Cited by 200+ papers</li>
-<li>Follow-up work on when to write code vs.&nbsp;reason in words (Chen et al., ICLR 2025)</li>
+<li>Follow-up work on when to write code vs.&nbsp;reason in words (Chen et al., ICLR 2025) <img data-src="images/logo-iclr.svg" class="side-logo"></li>
 <li>Models are now trained to reason step by step on their own, without few-shot prompts</li>
-<li>Today’s reasoning models run code in the middle of their reasoning (OpenAI o3, 2025)</li>
+<li>Today’s reasoning models run code in the middle of their reasoning (OpenAI o3, 2025) <img data-src="images/logo-openai.png" class="side-logo"></li>
 </ul>
 </div>
 
 <aside><div>
-<p><a href="https://scholar.google.com/scholar?q=%22Chain+of+Code%3A+Reasoning+with+a+Language+Model-Augmented+Code+Emulator%22">Citations: Google Scholar, Oct 2026</a> · <a href="https://openai.com/index/introducing-o3-and-o4-mini/">OpenAI, Introducing o3 and o4-mini, Apr 2025</a></p>
+<p><a href="https://scholar.google.com/scholar?q=%22Chain+of+Code%3A+Reasoning+with+a+Language+Model-Augmented+Code+Emulator%22">Citations: Google Scholar, Oct 2026</a> · <a href="https://openai.com/index/introducing-o3-and-o4-mini/">OpenAI o3, Apr 2025</a> · Logos: <a href="https://iclr.cc/">iclr.cc</a>, <a href="https://commons.wikimedia.org/">Wikimedia Commons</a></p>
 </div></aside></section>
 <section id="summary-and-conclusion" class="slide level2">
 <h2>Summary and Conclusion</h2>
 <div class="middle" style="font-size: 85%;">
 <ul>
 <li>LLMs know facts, but are shaky at exact math</li>
-<li>Chain of Code: the LM writes code; Python runs what it can, the LM emulates the rest</li>
+<li>Chain of Code: the LLM writes code; Python runs what it can, the LLM emulates the rest</li>
 <li>Paper: 84% on BIG-Bench Hard, vs.&nbsp;72% for Chain of Thought</li>
-<li>Our demo (7B model): 30/30 vs.&nbsp;3/30, with the same facts, but Python doing the math</li>
-<li>Limit: works best when the examples come from the same kind of problem</li>
+<li>Our demo (7B model): 100% vs.&nbsp;10%, with the same facts, but Python doing the math</li>
+<li>Limitations:
+<ul>
+<li>works best when the examples come from the same kind of problem</li>
+<li>requires prompt engineering (using models at the time)</li>
+</ul></li>
 </ul>
 </div>
 

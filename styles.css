@@ -97,3 +97,22 @@
   margin: 0 auto;
   display: block;
 }
+
+/* Bullets in the left 2/3 of the slide, with a logo beside some of them in the right 1/3:
+   ::: {.side-logos} around the list, and ![](logo.png){.side-logo} at the end of a bullet */
+.reveal .side-logos ul {
+  width: 67%;
+}
+.reveal .side-logos li {
+  position: relative;
+}
+.reveal .side-logos img.side-logo {
+  position: absolute;
+  left: 104%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 31%;
+  height: 60px;
+  object-fit: contain;
+  margin: 0;
+}

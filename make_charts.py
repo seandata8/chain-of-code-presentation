@@ -10,7 +10,7 @@ import csv
 
 import matplotlib.pyplot as plt
 
-BLUE = "#2a78d6"  # Chain of Code / uses both Python and the LM
+BLUE = "#2a78d6"  # Chain of Code / uses both Python and the LLM
 GRAY = "#b8b6ae"  # everything else
 INK, MUTED, GRID = "#0b0b0b", "#52514e", "#e4e3df"
 
@@ -50,10 +50,10 @@ def task_type_chart():
 
 
 def ablation_chart():
-    """Table 2: average BIG-Bench Hard accuracy with Python, the LM, or both running the code."""
+    """Table 2: average BIG-Bench Hard accuracy with Python, the LLM, or both running the code."""
     rows = [
-        ("Python + LM (interweave)", 84, True),
-        ("LM only", 57, False),
+        ("Python + LLM (interweave)", 84, True),
+        ("LLM only", 57, False),
         ("Python only", 48, False),
     ]
     fig, ax = plt.subplots(figsize=(9, 3.2), dpi=200)

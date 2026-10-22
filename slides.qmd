@@ -82,7 +82,7 @@ Dec 2023
 Chain of Code tested GPT-3.5, GPT-4, and PaLM 2.
 :::
 
-:::: {.columns}
+:::: {.columns style="display: block; margin-top: 2em;"}
 ::: {.column .small-text width="50%"}
 [Chain of Thought]{.method-header} (Wei et al., 2022)
 
@@ -152,9 +152,8 @@ I’ve been to Mumbai, London, Washington, Grand Canyon, Baltimore, Longsheng, G
 
 - Prompt includes pseudo-code examples
 - Model writes code to solve it
-- Harness runs code in Python or LM
 - Lines in red evaluated with Python
-- Lines in purple evaluated with an LLM
+- Lines in purple: the LMulator (the LLM pretends to be Python)
 - **Right 100% of the time**
 :::
 :::
@@ -204,13 +203,13 @@ BIG-Bench Hard: 23 tasks that are hard for LLMs. Examples:
 [Data from Figure 4 and Table A1, Li et al., ICML 2024](https://arxiv.org/abs/2312.04474)
 :::
 
-## Both Python and the LM Are Needed {.small-title}
+## Both Python and the LLM Are Needed {.small-title}
 
 ![](images/results-ablation.png){width="95%" fig-align="center"}
 
 ::: {style="display: table; margin: -2em auto 0; font-size: 80%;"}
 - Average accuracy on BIG-Bench Hard.
-- [Blue]{style="color: #2a78d6;"}: uses both Python and the LM.
+- [Blue]{style="color: #2a78d6;"}: uses both Python and the LLM.
 :::
 
 ::: aside
@@ -241,26 +240,28 @@ Qwen2.5-Coder 7B base (Alibaba, 2024) · running locally with Ollama · 4.7 GB �
 
 ## Impact of Chain of Code
 
-::: {.middle style="font-size: 85%;"}
+::: {.middle .side-logos style="font-size: 85%;"}
 - Oral presentation at ICML 2024
 - Cited by 200+ papers
-- Follow-up work on when to write code vs. reason in words (Chen et al., ICLR 2025)
+- Follow-up work on when to write code vs. reason in words (Chen et al., ICLR 2025) ![](images/logo-iclr.svg){.side-logo}
 - Models are now trained to reason step by step on their own, without few-shot prompts
-- Today's reasoning models run code in the middle of their reasoning (OpenAI o3, 2025)
+- Today's reasoning models run code in the middle of their reasoning (OpenAI o3, 2025) ![](images/logo-openai.png){.side-logo}
 :::
 
 ::: aside
-[Citations: Google Scholar, Oct 2026](https://scholar.google.com/scholar?q=%22Chain+of+Code%3A+Reasoning+with+a+Language+Model-Augmented+Code+Emulator%22) · [OpenAI, Introducing o3 and o4-mini, Apr 2025](https://openai.com/index/introducing-o3-and-o4-mini/)
+[Citations: Google Scholar, Oct 2026](https://scholar.google.com/scholar?q=%22Chain+of+Code%3A+Reasoning+with+a+Language+Model-Augmented+Code+Emulator%22) · [OpenAI o3, Apr 2025](https://openai.com/index/introducing-o3-and-o4-mini/) · Logos: [iclr.cc](https://iclr.cc/), [Wikimedia Commons](https://commons.wikimedia.org/)
 :::
 
 ## Summary and Conclusion
 
 ::: {.middle style="font-size: 85%;"}
 - LLMs know facts, but are shaky at exact math
-- Chain of Code: the LM writes code; Python runs what it can, the LM emulates the rest
+- Chain of Code: the LLM writes code; Python runs what it can, the LLM emulates the rest
 - Paper: 84% on BIG-Bench Hard, vs. 72% for Chain of Thought
-- Our demo (7B model): 30/30 vs. 3/30, with the same facts, but Python doing the math
-- Limit: works best when the examples come from the same kind of problem
+- Our demo (7B model): 100% vs. 10%, with the same facts, but Python doing the math
+- Limitations:
+  - works best when the examples come from the same kind of problem
+  - requires prompt engineering (using models at the time)
 :::
 
 ::: aside
