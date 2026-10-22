@@ -6,8 +6,9 @@ acts as a code emulator ("LMulator"): it is shown the question, the code
 so far, and the program state, and it returns the new values of the
 variables that line changes (the "delta state"). Execution then continues.
 
-Adapted from the authors' demo notebook (paper/coc_demo.ipynb), which also
-wraps lines in try/except and follows execution with sys.settrace.
+Adapted from Google's Chain of Code demo notebook (paper/coc_demo.ipynb;
+© 2023 Google LLC, Apache-2.0), which also wraps lines in try/except and
+follows execution with sys.settrace.
 """
 
 import ast

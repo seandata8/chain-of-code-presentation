@@ -1,0 +1,31 @@
+date,correct,answer,right,math right,math checked,fact right,fact checked,choice right,choice checked,births right,births checked
+1950-03-25,Ada Lovelace,Nikola Tesla,0,0,4,2,2,0,2,10,10
+1959-03-19,Nikola Tesla,Marie Curie,0,1,5,2,2,0,2,10,10
+1960-09-09,Stephen Hawking,Marie Curie,0,0,5,2,2,0,2,10,10
+1970-01-14,Carl Friedrich Gauss,Nikola Tesla,0,0,4,2,2,0,2,10,10
+1971-07-15,Marie Curie,Charles Darwin,0,1,5,2,2,0,2,10,10
+1978-09-02,Carl Friedrich Gauss,Nikola Tesla,0,0,4,2,2,0,2,10,10
+1987-09-30,Stephen Hawking,Marie Curie,0,1,5,2,2,0,2,10,10
+1989-08-01,Frederick Banting,Charles Darwin,0,2,4,2,2,0,2,10,10
+1994-01-20,Carl Friedrich Gauss,Marie Curie,0,1,5,2,2,1,2,10,10
+1995-02-05,Alan Turing,Marie Curie,0,1,5,2,2,0,2,10,10
+1995-12-07,Carl Friedrich Gauss,Nikola Tesla,0,0,4,2,2,0,2,10,10
+1999-02-28,Frederick Banting,Marie Curie,0,0,4,2,2,0,2,10,10
+1999-12-12,Ernest Rutherford,Nikola Tesla,0,1,5,2,2,0,2,10,10
+2001-05-19,Ernest Rutherford,Marie Curie,0,0,4,2,2,0,2,10,10
+2002-08-20,Carl Friedrich Gauss / Ada Lovelace,Marie Curie,0,1,5,2,2,1,2,10,10
+2003-12-09,Ernest Rutherford,Nikola Tesla,0,1,5,2,2,0,2,10,10
+2005-10-09,Alan Turing,Nikola Tesla,0,0,4,2,2,0,2,10,10
+2008-01-31,Alan Turing,Marie Curie,0,0,5,2,2,0,2,10,10
+2015-07-26,Marie Curie,Charles Darwin,0,0,5,2,2,1,2,10,10
+2017-05-28,Charles Darwin,Charles Darwin,1,1,5,2,2,0,2,10,10
+2018-12-09,Ernest Rutherford,Nikola Tesla,0,0,4,2,2,0,2,10,10
+2019-05-21,Ernest Rutherford,Charles Darwin,0,1,5,2,2,0,2,10,10
+2019-09-12,Stephen Hawking,Nikola Tesla,0,1,5,2,2,0,2,10,10
+2020-04-22,Stephen Hawking,Marie Curie,0,0,4,2,2,0,2,10,10
+2025-08-11,Carl Friedrich Gauss,Charles Darwin,0,0,4,2,2,0,2,10,10
+2027-03-12,Alan Turing,Nikola Tesla,0,1,5,2,2,0,2,10,10
+2029-05-11,Ernest Rutherford,Marie Curie,0,1,5,2,2,0,2,10,10
+2030-04-29,Stephen Hawking,Marie Curie,0,1,5,2,2,0,2,10,10
+2035-05-26,Charles Darwin,Marie Curie,0,0,4,2,2,0,2,10,10
+2035-07-18,Marie Curie,Charles Darwin,0,0,5,2,2,1,2,10,10

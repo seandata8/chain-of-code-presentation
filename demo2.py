@@ -1,0 +1,60 @@
+"""demo.py, but Chain of Thought writes down each birthday first (see cot_lookups.py).
+
+Usage: uv run demo2.py                    (asks for a date)
+       uv run demo2.py "15 March 2027"    (or 2027-03-15)
+
+It shows the correct answer first. Then, for each method, it shows the
+prompt, waits for Enter, then shows the model's output and whether it is
+right. A summary comes at the end.
+"""
+
+from checks import check_coc, check_cot, summary
+from cot_lookups import check_births, cot_lookup_prompt, run_cot_lookups
+from demo import BOLD, RESET, ask_for_date, blue_questions, marked, pause, print_truth
+from ground_truth import answer
+from methods import is_correct, run_coc, run_direct
+from prompts import coc_prompt, direct_prompt, fmt, question
+
+METHODS = [("Direct", run_direct), ("Chain of Thought", run_cot_lookups), ("Chain of Code", run_coc)]
+PROMPTS = {"Direct": direct_prompt, "Chain of Thought": cot_lookup_prompt, "Chain of Code": coc_prompt}
+
+
+def main():
+    d = ask_for_date()
+    print(f"\n{blue_questions(question(d))}")
+    truth = answer(d)
+    print()
+    print_truth(truth, d)
+
+    results = []
+    for title, run in METHODS:
+        pause(f"see the {title} prompt")
+        print(f"\n{BOLD}===== {title}: prompt ====={RESET}\n{blue_questions(PROMPTS[title](d))}")
+        pause(f"run {title}")
+        print(f"\n{BOLD}===== {title}: model output ====={RESET}")
+        result = run(d, stream=True)  # prints the output (and CoC trace) as it is generated
+        if result.get("error"):
+            print(f"Execution stopped: {result['error']}")
+        answer_ok = is_correct(result["answer"], truth)
+        print("\n" + BOLD + marked(answer_ok, f"{title} answer: {result['answer']}"))
+        if title == "Chain of Thought":
+            checks = check_births(result["raw"]) + check_cot(result["raw"], d)
+            print(f"\nChecking each step ({summary(checks)}):")
+        elif title == "Chain of Code":
+            checks = check_coc(result["trace"])
+            print(f"\nChecking the LM's birthdays ({summary(checks)}):")
+        else:
+            checks = []
+        for kind, claim, ok in checks:
+            print(f"  {marked(ok, f'{kind:<6} {claim}')}")
+        results.append((title, result["answer"], answer_ok))
+
+    pause("see the results")
+    print(f"\n{BOLD}===== Results for {fmt(d)} ====={RESET}")
+    print_truth(truth, d)
+    for title, model_answer, ok in results:
+        print(f"  {marked(ok, f'{title:<17} {model_answer}')}")
+
+
+if __name__ == "__main__":
+    main()
