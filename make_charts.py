@@ -1,7 +1,10 @@
 """Draw the results bar charts for the slides.
 
 The first two use data from Li et al., ICML 2024; the demo charts read our
-own results from results/random-30-seed-2026.csv (made by rehearse.py).
+own results: Direct and Chain of Code from results/random-30-seed-2026.csv
+(made by rehearse.py), and Chain of Thought, using the prompt that writes
+down each birthday first, from results/cot-lookups-random-30-seed-2026.csv
+(made by rehearse_lookups.py).
 
 Usage: uv run --with matplotlib make_charts.py
 """
@@ -74,13 +77,18 @@ def ablation_chart():
     fig.savefig("images/results-ablation.png", transparent=True)
 
 
-def demo_charts(path="results/random-30-seed-2026.csv"):
+def demo_charts(path="results/random-30-seed-2026.csv", cot_path="results/cot-lookups-random-30-seed-2026.csv"):
     """Our demo on 30 random dates: answers right, and steps right."""
     with open(path) as f:
         rows = list(csv.DictReader(f))
+    with open(cot_path) as f:
+        cot_rows = list(csv.DictReader(f))
 
-    def total(column):
+    def total(column, rows=rows):
         return sum(int(r[column]) for r in rows)
+
+    def cot(column):
+        return total(column, cot_rows)
 
     def bars(items, filename, groups=()):
         """groups: (label, x) pairs written under the bar labels, naming the method."""
@@ -103,11 +111,11 @@ def demo_charts(path="results/random-30-seed-2026.csv"):
 
     n = len(rows)
     bars([("Direct", total("Direct correct"), n, False),
-          ("Chain of\nThought", total("Chain of Thought correct"), n, False),
+          ("Chain of\nThought", cot("right"), len(cot_rows), False),
           ("Chain of\nCode", total("Chain of Code correct"), n, True)], "demo-answers.png")
-    bars([("facts", total("CoT fact right"), total("CoT fact checked"), False),
-          ("math", total("CoT math right"), total("CoT math checked"), False),
-          ("choices", total("CoT choice right"), total("CoT choice checked"), False),
+    bars([("facts", cot("births right"), cot("births checked"), False),
+          ("math", cot("math right"), cot("math checked"), False),
+          ("choices", cot("choice right"), cot("choice checked"), False),
           ("facts", total("CoC birthdays right"), total("CoC birthdays checked"), True)], "demo-steps.png",
          groups=[("Chain of Thought", 1), ("Chain of Code", 3.4)])
 
