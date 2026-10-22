@@ -27,18 +27,19 @@ def clean_axes(ax):
 def task_type_chart():
     """Figure 4 / Table A1: average BIG-Bench Hard accuracy by task type."""
     groups = {"Algorithmic tasks": [41, 71, 95], "Language tasks": [67, 74, 74]}
-    methods = ["Direct", "CoT", "CoC"]
+    methods = ["Direct", "Chain of\nThought", "Chain of\nCode"]
     fig, ax = plt.subplots(figsize=(9, 4.6), dpi=200)
     positions, labels = [], []
     for g, (group, scores) in enumerate(groups.items()):
         for m, (method, score) in enumerate(zip(methods, scores)):
             x = g * 4 + m
-            ax.bar(x, score, width=0.8, color=BLUE if method == "CoC" else GRAY)
+            is_coc = method == methods[-1]
+            ax.bar(x, score, width=0.8, color=BLUE if is_coc else GRAY)
             ax.text(x, score + 1.5, f"{score}%", ha="center", va="bottom",
-                    fontsize=17, fontweight="bold" if method == "CoC" else "normal")
+                    fontsize=17, fontweight="bold" if is_coc else "normal")
             positions.append(x)
             labels.append(method)
-        ax.text(g * 4 + 1, -17, group, ha="center", fontsize=18, color=INK)
+        ax.text(g * 4 + 1, -24, group, ha="center", fontsize=18, color=INK)
     ax.set_xticks(positions, labels)
     ax.tick_params(axis="x", length=0, labelsize=16)
     ax.set_ylim(0, 105)
@@ -81,15 +82,19 @@ def demo_charts(path="results/random-30-seed-2026.csv"):
     def total(column):
         return sum(int(r[column]) for r in rows)
 
-    def bars(items, filename):
+    def bars(items, filename, groups=()):
+        """groups: (label, x) pairs written under the bar labels, naming the method."""
         fig, ax = plt.subplots(figsize=(6, 4.6), dpi=200)
-        for x, (label, right, out_of, is_coc) in enumerate(items):
+        positions = [x + (0.4 if groups and is_coc else 0) for x, (*_, is_coc) in enumerate(items)]
+        for x, (label, right, out_of, is_coc) in zip(positions, items):
             percent = round(100 * right / out_of)
             ax.bar(x, percent, width=0.7, color=BLUE if is_coc else GRAY)
             ax.text(x, percent + 2, f"{percent}%\n({right}/{out_of})", ha="center", va="bottom",
                     fontsize=17, fontweight="bold" if is_coc else "normal")
-        ax.set_xticks(range(len(items)), [label for label, *_ in items])
+        ax.set_xticks(positions, [label for label, *_ in items])
         ax.tick_params(axis="x", length=0, labelsize=18, labelcolor=INK)
+        for group, x in groups:
+            ax.text(x, -20, group, ha="center", fontsize=16, color=INK)
         ax.set_ylim(0, 125)
         ax.set_yticks([])
         clean_axes(ax)
@@ -98,12 +103,13 @@ def demo_charts(path="results/random-30-seed-2026.csv"):
 
     n = len(rows)
     bars([("Direct", total("Direct correct"), n, False),
-          ("CoT", total("Chain of Thought correct"), n, False),
-          ("CoC", total("Chain of Code correct"), n, True)], "demo-answers.png")
-    bars([("CoT\nfacts", total("CoT fact right"), total("CoT fact checked"), False),
-          ("CoT\nmath", total("CoT math right"), total("CoT math checked"), False),
-          ("CoT\nchoices", total("CoT choice right"), total("CoT choice checked"), False),
-          ("CoC\nfacts", total("CoC birthdays right"), total("CoC birthdays checked"), True)], "demo-steps.png")
+          ("Chain of\nThought", total("Chain of Thought correct"), n, False),
+          ("Chain of\nCode", total("Chain of Code correct"), n, True)], "demo-answers.png")
+    bars([("facts", total("CoT fact right"), total("CoT fact checked"), False),
+          ("math", total("CoT math right"), total("CoT math checked"), False),
+          ("choices", total("CoT choice right"), total("CoT choice checked"), False),
+          ("facts", total("CoC birthdays right"), total("CoC birthdays checked"), True)], "demo-steps.png",
+         groups=[("Chain of Thought", 1), ("Chain of Code", 3.4)])
 
 
 if __name__ == "__main__":

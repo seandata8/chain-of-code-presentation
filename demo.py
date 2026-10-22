@@ -18,12 +18,17 @@ from prompts import coc_prompt, cot_prompt, direct_prompt, fmt, question
 
 PROMPTS = {"Direct": direct_prompt, "Chain of Thought": cot_prompt, "Chain of Code": coc_prompt}
 # Orange, not red, for wrong answers: red already means "Python ran this line" in the trace.
-BOLD, GREEN, ORANGE, RESET = "\033[1m", "\033[32m", "\033[38;5;208m", "\033[0m"
+BOLD, GREEN, ORANGE, BLUE, RESET = "\033[1m", "\033[32m", "\033[38;5;208m", "\033[94m", "\033[0m"
 
 
 def marked(ok: bool, text: str) -> str:
     """Text with a green ✓ if ok, else an orange ✗."""
     return f"{GREEN}✓ {text}{RESET}" if ok else f"{ORANGE}✗ {text}{RESET}"
+
+
+def blue_questions(text: str) -> str:
+    """Text with every "Q:" line in blue, so the questions stand out."""
+    return "\n".join(f"{BLUE}{line}{RESET}" if line.startswith("Q:") else line for line in text.split("\n"))
 
 
 def parse_date(text: str) -> date | None:
@@ -59,7 +64,7 @@ def print_truth(truth: list[tuple[str, date]], d: date) -> None:
 
 def main():
     d = ask_for_date()
-    print(f"\n{question(d)}")
+    print(f"\n{blue_questions(question(d))}")
     truth = answer(d)
     print()
     print_truth(truth, d)
@@ -67,7 +72,7 @@ def main():
     results = []
     for title, run in METHODS:
         pause(f"see the {title} prompt")
-        print(f"\n{BOLD}===== {title}: prompt ====={RESET}\n{PROMPTS[title](d)}")
+        print(f"\n{BOLD}===== {title}: prompt ====={RESET}\n{blue_questions(PROMPTS[title](d))}")
         pause(f"run {title}")
         print(f"\n{BOLD}===== {title}: model output ====={RESET}")
         result = run(d, stream=True)  # prints the output (and CoC trace) as it is generated

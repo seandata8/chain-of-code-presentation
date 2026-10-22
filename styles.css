@@ -78,3 +78,22 @@
   font-weight: bold;
   font-size: 1.2em;
 }
+
+/* A row of logos with a caption under each: ::: {.logo-row} holding ::: {.logo} blocks */
+.reveal .logo-row {
+  display: flex;
+  gap: 1em;
+  text-align: center;
+  font-size: 50%;
+  margin-top: 0.5em;
+}
+.reveal .logo-row .logo {
+  flex: 1;
+}
+.reveal .logo-row img {
+  width: 80%;
+  height: 56px;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+}

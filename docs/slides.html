@@ -6,8 +6,8 @@
 <script src="slides_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="slides_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="slides_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="slides_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.10.18">
+<link href="slides_files/libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <title>Chain of Code</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -160,6 +160,60 @@
 <aside><div>
 <p><a href="https://x.com/DrJimFan/status/1816521330298356181">Jim Fan, X, July 2024</a></p>
 </div></aside></section>
+<section id="context-late-2023" class="slide level2 small-title">
+<h2>Context: Late 2023</h2>
+<div class="logo-row">
+<div class="logo">
+<p><img data-src="images/logo-openai.png"></p>
+<p><strong>GPT-3.5, GPT-4</strong><br>
+Nov 2022, Mar 2023</p>
+</div>
+<div class="logo">
+<p><img data-src="images/logo-google.png"></p>
+<p><strong>PaLM 2</strong><br>
+May 2023</p>
+</div>
+<div class="logo">
+<p><img data-src="images/logo-anthropic.png"></p>
+<p><strong>Claude 2</strong><br>
+Jul 2023</p>
+</div>
+<div class="logo">
+<p><img data-src="images/logo-meta.png"></p>
+<p><strong>Llama 2</strong><br>
+Jul 2023</p>
+</div>
+<div class="logo">
+<p><img data-src="images/logo-gemini.png"></p>
+<p><strong>Gemini</strong><br>
+Dec 2023</p>
+</div>
+</div>
+<div style="text-align: center; font-size: 60%;">
+<p>Chain of Code tested GPT-3.5, GPT-4, and PaLM 2.</p>
+</div>
+<div class="columns">
+<div class="column small-text" style="width:50%;">
+<p><span class="method-header">Chain of Thought</span> (Wei et al., 2022)</p>
+<ul>
+<li>Prompt shows worked examples, reasoning in words</li>
+<li>Model does the math itself, in text</li>
+</ul>
+</div><div class="column small-text" style="width:50%;">
+<p><span class="method-header">Program of Thoughts</span> (Chen et al., 2022)</p>
+<ul>
+<li>Prompt shows worked examples, solved in Python</li>
+<li>Model writes code; Python runs it</li>
+<li>Fails if a step can’t be written as code</li>
+</ul>
+</div></div>
+<div style="text-align: center; font-size: 60%;">
+<p>Both were just few-shot prompts, with no extra training.</p>
+</div>
+
+<aside><div>
+<p><a href="https://commons.wikimedia.org/">Logos: Wikimedia Commons (public domain)</a></p>
+</div></aside></section>
 <section id="example-problem-requiring-both-language-and-math" class="slide level2 small-title">
 <h2>Example Problem Requiring Both Language and Math</h2>
 <div style="font-size: 70%;">
@@ -245,7 +299,7 @@
 <div style="display: table; margin: -1.2em auto 0; font-size: 80%;">
 <ul>
 <li>Average accuracy on BIG-Bench Hard.</li>
-<li>On language tasks, CoC still matches CoT.</li>
+<li>On language tasks, Chain of Code still matches Chain of Thought.</li>
 </ul>
 </div>
 
@@ -275,7 +329,7 @@
 <blockquote>
 <p>Of the birthdays of Banting, Curie, Darwin, Einstein, Gauss, Hawking, Lovelace, Rutherford, Tesla, and Turing that are at least 100 days before or after <strong>15 March 2027</strong>, whose is closest?</p>
 </blockquote>
-<p>Qwen2.5-Coder 7B (base model) on a laptop · three worked examples per method</p>
+<p>Qwen2.5-Coder 7B base (Alibaba, 2024) · running locally with Ollama · 4.7 GB · three worked examples per method</p>
 </div>
 <div class="columns">
 <div class="column chart-column" style="width:50%;">
@@ -286,6 +340,21 @@
 <p><img data-src="images/demo-steps.png" style="width:92.0%"></p>
 </div></div>
 </section>
+<section id="impact-of-chain-of-code" class="slide level2">
+<h2>Impact of Chain of Code</h2>
+<div class="middle" style="font-size: 85%;">
+<ul>
+<li>Oral presentation at ICML 2024</li>
+<li>Cited by 200+ papers</li>
+<li>Follow-up work on when to write code vs.&nbsp;reason in words (Chen et al., ICLR 2025)</li>
+<li>Models are now trained to reason step by step on their own, without few-shot prompts</li>
+<li>Today’s reasoning models run code in the middle of their reasoning (OpenAI o3, 2025)</li>
+</ul>
+</div>
+
+<aside><div>
+<p><a href="https://scholar.google.com/scholar?q=%22Chain+of+Code%3A+Reasoning+with+a+Language+Model-Augmented+Code+Emulator%22">Citations: Google Scholar, Oct 2026</a> · <a href="https://openai.com/index/introducing-o3-and-o4-mini/">OpenAI, Introducing o3 and o4-mini, Apr 2025</a></p>
+</div></aside></section>
 <section id="summary-and-conclusion" class="slide level2">
 <h2>Summary and Conclusion</h2>
 <div class="middle" style="font-size: 85%;">
@@ -303,12 +372,14 @@
 </div></aside></section>
 <section id="references" class="slide level2">
 <h2>References</h2>
-<div class="references" style="font-size: 60%;">
+<div class="references" style="font-size: 50%;">
 <p>Li, C., Liang, J., Zeng, A., Chen, X., Hausman, K., Sadigh, D., Levine, S., Fei-Fei, L., Xia, F., &amp; Ichter, B. (2024). <em>Chain of Code: Reasoning with a Language Model-Augmented Code Emulator.</em> Proceedings of the 41st International Conference on Machine Learning (ICML), PMLR 235.</p>
 <ul>
 <li>Paper: <a href="https://arxiv.org/abs/2312.04474" class="uri">https://arxiv.org/abs/2312.04474</a></li>
 <li>Project page: <a href="https://chain-of-code.github.io/" class="uri">https://chain-of-code.github.io/</a></li>
 </ul>
+<p>Wei, J., Wang, X., Schuurmans, D., Bosma, M., Ichter, B., Xia, F., Chi, E., Le, Q., &amp; Zhou, D. (2022). <em>Chain-of-Thought Prompting Elicits Reasoning in Large Language Models.</em> NeurIPS 2022. <a href="https://arxiv.org/abs/2201.11903" class="uri">https://arxiv.org/abs/2201.11903</a></p>
+<p>Chen, W., Ma, X., Wang, X., &amp; Cohen, W. W. (2022). <em>Program of Thoughts Prompting: Disentangling Computation from Reasoning for Numerical Reasoning Tasks.</em> arXiv:2211.12588. <a href="https://arxiv.org/abs/2211.12588" class="uri">https://arxiv.org/abs/2211.12588</a></p>
 <p>Suzgun, M., Scales, N., Schärli, N., Gehrmann, S., et al.&nbsp;(2022). <em>Challenging BIG-Bench Tasks and Whether Chain-of-Thought Can Solve Them.</em> arXiv:2210.09261. <a href="https://arxiv.org/abs/2210.09261" class="uri">https://arxiv.org/abs/2210.09261</a></p>
 <p>Hui, B., Yang, J., Cui, Z., Yang, J., et al.&nbsp;(2024). <em>Qwen2.5-Coder Technical Report.</em> arXiv:2409.12186. <a href="https://arxiv.org/abs/2409.12186" class="uri">https://arxiv.org/abs/2409.12186</a><br>
 Demo model: qwen2.5-coder:7b-base via Ollama, <a href="https://ollama.com/library/qwen2.5-coder" class="uri">https://ollama.com/library/qwen2.5-coder</a></p>

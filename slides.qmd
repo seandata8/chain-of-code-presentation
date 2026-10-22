@@ -39,6 +39,74 @@ GPT-4o, Claude 3.5, Llama 3 (2024): **9.11** [✗]{style="color: red;"}
 [Jim Fan, X, July 2024](https://x.com/DrJimFan/status/1816521330298356181)
 :::
 
+## Context: Late 2023 {.small-title}
+
+::: {.logo-row}
+::: {.logo}
+![](images/logo-openai.png)
+
+**GPT-3.5, GPT-4**\
+Nov 2022, Mar 2023
+:::
+
+::: {.logo}
+![](images/logo-google.png)
+
+**PaLM 2**\
+May 2023
+:::
+
+::: {.logo}
+![](images/logo-anthropic.png)
+
+**Claude 2**\
+Jul 2023
+:::
+
+::: {.logo}
+![](images/logo-meta.png)
+
+**Llama 2**\
+Jul 2023
+:::
+
+::: {.logo}
+![](images/logo-gemini.png)
+
+**Gemini**\
+Dec 2023
+:::
+:::
+
+::: {style="text-align: center; font-size: 60%;"}
+Chain of Code tested GPT-3.5, GPT-4, and PaLM 2.
+:::
+
+:::: {.columns}
+::: {.column .small-text width="50%"}
+[Chain of Thought]{.method-header} (Wei et al., 2022)
+
+- Prompt shows worked examples, reasoning in words
+- Model does the math itself, in text
+:::
+
+::: {.column .small-text width="50%"}
+[Program of Thoughts]{.method-header} (Chen et al., 2022)
+
+- Prompt shows worked examples, solved in Python
+- Model writes code; Python runs it
+- Fails if a step can't be written as code
+:::
+::::
+
+::: {style="text-align: center; font-size: 60%;"}
+Both were just few-shot prompts, with no extra training.
+:::
+
+::: aside
+[Logos: Wikimedia Commons (public domain)](https://commons.wikimedia.org/)
+:::
+
 ## Example Problem Requiring Both Language and Math {.small-title}
 
 ::: {style="font-size: 70%;"}
@@ -129,7 +197,7 @@ BIG-Bench Hard: 23 tasks that are hard for LLMs. Examples:
 
 ::: {style="display: table; margin: -1.2em auto 0; font-size: 80%;"}
 - Average accuracy on BIG-Bench Hard.
-- On language tasks, CoC still matches CoT.
+- On language tasks, Chain of Code still matches Chain of Thought.
 :::
 
 ::: aside
@@ -154,7 +222,7 @@ BIG-Bench Hard: 23 tasks that are hard for LLMs. Examples:
 ::: {style="font-size: 60%;"}
 > Of the birthdays of Banting, Curie, Darwin, Einstein, Gauss, Hawking, Lovelace, Rutherford, Tesla, and Turing that are at least 100 days before or after **15 March 2027**, whose is closest?
 
-Qwen2.5-Coder 7B (base model) on a laptop · three worked examples per method
+Qwen2.5-Coder 7B base (Alibaba, 2024) · running locally with Ollama · 4.7 GB · three worked examples per method
 :::
 
 :::: {.columns}
@@ -170,6 +238,20 @@ Qwen2.5-Coder 7B (base model) on a laptop · three worked examples per method
 ![](images/demo-steps.png){width="92%"}
 :::
 ::::
+
+## Impact of Chain of Code
+
+::: {.middle style="font-size: 85%;"}
+- Oral presentation at ICML 2024
+- Cited by 200+ papers
+- Follow-up work on when to write code vs. reason in words (Chen et al., ICLR 2025)
+- Models are now trained to reason step by step on their own, without few-shot prompts
+- Today's reasoning models run code in the middle of their reasoning (OpenAI o3, 2025)
+:::
+
+::: aside
+[Citations: Google Scholar, Oct 2026](https://scholar.google.com/scholar?q=%22Chain+of+Code%3A+Reasoning+with+a+Language+Model-Augmented+Code+Emulator%22) · [OpenAI, Introducing o3 and o4-mini, Apr 2025](https://openai.com/index/introducing-o3-and-o4-mini/)
+:::
 
 ## Summary and Conclusion
 
@@ -187,13 +269,19 @@ Qwen2.5-Coder 7B (base model) on a laptop · three worked examples per method
 
 ## References
 
-::: {.references style="font-size: 60%;"}
+::: {.references style="font-size: 50%;"}
 Li, C., Liang, J., Zeng, A., Chen, X., Hausman, K., Sadigh, D., Levine, S., Fei-Fei, L., Xia, F., & Ichter, B. (2024).
 *Chain of Code: Reasoning with a Language Model-Augmented Code Emulator.*
 Proceedings of the 41st International Conference on Machine Learning (ICML), PMLR 235.
 
 - Paper: <https://arxiv.org/abs/2312.04474>
 - Project page: <https://chain-of-code.github.io/>
+
+Wei, J., Wang, X., Schuurmans, D., Bosma, M., Ichter, B., Xia, F., Chi, E., Le, Q., & Zhou, D. (2022).
+*Chain-of-Thought Prompting Elicits Reasoning in Large Language Models.* NeurIPS 2022. <https://arxiv.org/abs/2201.11903>
+
+Chen, W., Ma, X., Wang, X., & Cohen, W. W. (2022).
+*Program of Thoughts Prompting: Disentangling Computation from Reasoning for Numerical Reasoning Tasks.* arXiv:2211.12588. <https://arxiv.org/abs/2211.12588>
 
 Suzgun, M., Scales, N., Schärli, N., Gehrmann, S., et al. (2022).
 *Challenging BIG-Bench Tasks and Whether Chain-of-Thought Can Solve Them.*
