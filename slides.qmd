@@ -79,7 +79,7 @@ Dec 2023
 :::
 
 ::: {style="text-align: center; font-size: 60%;"}
-Chain of Code tested GPT-3.5, GPT-4, and PaLM 2.
+Chain of Code's main model: GPT-3.5 (text-davinci-003).
 :::
 
 :::: {.columns style="display: block; margin-top: 2em;"}
@@ -221,7 +221,7 @@ BIG-Bench Hard: 23 tasks that are hard for LLMs. Examples:
 ::: {style="font-size: 60%;"}
 > Of the birthdays of Banting, Curie, Darwin, Einstein, Gauss, Hawking, Lovelace, Rutherford, Tesla, and Turing that are at least 100 days before or after **15 March 2027**, whose is closest?
 
-Qwen2.5-Coder 7B base (Alibaba, 2024) · running locally with Ollama · 4.7 GB · three worked examples per method
+Qwen2.5-Coder 7B base (Alibaba, 2024) · running locally with Ollama
 :::
 
 :::: {.columns}
