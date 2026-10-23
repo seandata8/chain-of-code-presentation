@@ -35,11 +35,11 @@ def run_cot(d: date, stream: bool = False) -> dict:
     return {"raw": raw, "answer": found[0].strip() if found else None}
 
 
-def run_coc(d: date, stream: bool = False) -> dict:
+def run_coc(d: date, stream: bool = False, show_first_lm_call=None) -> dict:
     raw = generate(coc_prompt(d), stop=["\nQ:", "\n\n"], max_tokens=500, stream=stream)
     if stream:
         print("\n\nTrace (red = Python, purple = LM):")
-    answer, trace, error = coc.execute(question(d), raw.strip(), stream=stream)
+    answer, trace, error = coc.execute(question(d), raw.strip(), stream=stream, show_first_lm_call=show_first_lm_call)
     return {"raw": raw, "answer": answer, "trace": trace, "error": error}
 
 

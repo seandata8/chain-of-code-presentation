@@ -8,14 +8,33 @@ prompt, waits for Enter, then shows the model's output and whether it is
 right. A summary comes at the end.
 """
 
+from functools import partial
+
 from checks import check_coc, check_cot, summary
+from coc import PURPLE
 from cot_lookups import check_births, cot_lookup_prompt, run_cot_lookups
 from demo import BOLD, RESET, ask_for_date, blue_questions, marked, pause, print_truth
 from ground_truth import answer
 from methods import is_correct, run_coc, run_direct
 from prompts import coc_prompt, direct_prompt, fmt, question
 
-METHODS = [("Direct", run_direct), ("Chain of Thought", run_cot_lookups), ("Chain of Code", run_coc)]
+
+def show_lm_call(prompt: str, ask) -> str:
+    """The LM's first line of the trace: its whole prompt, then (after Enter) what it writes."""
+    pause("see the prompt for the LM's first line")
+    print(f"\n{BOLD}===== Chain of Code: prompt for the LM's first line ====={RESET}")
+    print(blue_questions(prompt))
+    pause("see what the LM writes")
+    print(f"\n{BOLD}===== Chain of Code: what the LM writes ====={RESET}\n{PURPLE}", end="")
+    written = ask()  # prints it as the LM writes it
+    print(RESET)
+    pause("continue the trace")
+    print()
+    return written
+
+
+METHODS = [("Direct", run_direct), ("Chain of Thought", run_cot_lookups),
+           ("Chain of Code", partial(run_coc, show_first_lm_call=show_lm_call))]
 PROMPTS = {"Direct": direct_prompt, "Chain of Thought": cot_lookup_prompt, "Chain of Code": coc_prompt}
 
 

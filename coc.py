@@ -93,7 +93,11 @@ def assigned_names(line: str) -> set[str]:
     return {t.id for t in targets if isinstance(t, ast.Name)}
 
 
-def ask_lmulator(question: str, lines: list[str], lineno: int, state: dict, stream: bool = False) -> str:
+def lmulator_prompt(question: str, lines: list[str], lineno: int, state: dict) -> tuple[str, str]:
+    """The LMulator's whole prompt, and the start of the answer it ends with.
+
+    The start is filled in for the LM, so the LM writes only what comes after it.
+    """
     # Leave out the old values of the variables this line overwrites: a small
     # LM tends to copy them (e.g. the previous scientist's birth date).
     overwritten = assigned_names(lines[lineno - 1])
@@ -106,9 +110,12 @@ def ask_lmulator(question: str, lines: list[str], lineno: int, state: dict, stre
         f"{LMULATOR_EXAMPLES}\n\n{question}\n{code_so_far}\n"
         f"state: {show(state)}\nline: {lines[lineno - 1]}\ndelta state:{start}"
     )
-    if stream:
-        print(start.strip(), end="", flush=True)
-    return (start + generate(prompt, stop=["\n"], max_tokens=1000, stream=stream)).strip()
+    return prompt, start
+
+
+def ask_lmulator(prompt: str, stream: bool = False) -> str:
+    """What the LM writes after the prompt: the rest of the delta state line."""
+    return generate(prompt, stop=["\n"], max_tokens=1000, stream=stream)
 
 
 def wrap_in_try(statements: list[ast.stmt], wrapped_lines: set[int]) -> list[ast.stmt]:
@@ -130,13 +137,16 @@ def wrap_in_try(statements: list[ast.stmt], wrapped_lines: set[int]) -> list[ast
     return result
 
 
-def execute(question: str, code: str, stream: bool = False):
+def execute(question: str, code: str, stream: bool = False, show_first_lm_call=None):
     """Run the code with Python, falling back to the LM line by line.
 
     Returns (answer, trace, error). Each trace entry is one line run:
     {"line", "by": "Python" or "LM", "delta": delta state, "lm_output"}.
     With stream=True, print the trace live: each Python line when it
     finishes, and each LM line's output as the LM writes it.
+    show_first_lm_call(prompt, ask), if given, runs the first LM line in
+    place of the LM: it can show the whole prompt, then call ask() to get
+    what the LM writes after it, which it returns.
     """
     lines = code.splitlines()
     wrapped_lines = set()
@@ -155,7 +165,7 @@ def execute(question: str, code: str, stream: bool = False):
                 print_entry(trace[-1])
 
     def tracer(frame, event, arg):
-        nonlocal before
+        nonlocal before, show_first_lm_call
         if frame.f_code.co_filename != FILENAME or frame.f_code.co_name != "<module>":
             return None  # ignore lambdas and other functions the code calls
         if event == "line":
@@ -170,20 +180,34 @@ def execute(question: str, code: str, stream: bool = False):
             # silently switches tracing off.
             entry = trace[-1]
             entry["by"] = "LM"
-            if stream:
+            hook, show_first_lm_call = show_first_lm_call, None
+            live = stream and not hook  # print the LM's output in the trace as it writes it
+            if live:
                 print(f"{PURPLE}{'LM':>6} | {entry['line']}\n       | delta state: ", end="", flush=True)
+            elif stream:
+                print(f"{PURPLE}{'LM':>6} | {entry['line']}{RESET}")  # its delta state comes after the hook
             try:
-                entry["lm_output"] = ask_lmulator(question, lines, frame.f_lineno, before, stream)
+                prompt, start = lmulator_prompt(question, lines, frame.f_lineno, before)
+                ask = lambda: ask_lmulator(prompt, stream)
+                if hook:
+                    written = hook(prompt, ask)
+                else:
+                    if live:
+                        print(start.strip(), end="", flush=True)
+                    written = ask()
+                entry["lm_output"] = (start + written).strip()
                 entry["delta"] = parse_delta_state(entry["lm_output"])  # show what the LM said
                 env.update(entry["delta"])
                 entry["usable"] = True
             except Exception as e:
                 entry["usable"] = False  # state is unchanged; the trace shows why
                 entry["lm_error"] = f"{type(e).__name__}: {e}"
-            if stream:
+            if live:
                 print(RESET)
                 if not entry["usable"]:
                     print(f"       | (LM output not usable: {entry['lm_error']})")
+            elif stream:
+                print_entry(entry, with_line=False)
         elif event == "return":
             finish_line()
         return tracer
@@ -199,14 +223,15 @@ def execute(question: str, code: str, stream: bool = False):
     return env.get("answer"), trace, error
 
 
-def print_entry(entry: dict, width: int = 140) -> None:
+def print_entry(entry: dict, width: int = 140, with_line: bool = True) -> None:
     """One trace line: Python in red, LM in purple, as in the paper's figures.
 
     The LM's output is shown in full; a long Python delta state is cut so
     its line is at most `width` characters, ending in "...".
     """
     color = RED if entry["by"] == "Python" else PURPLE
-    print(f"{color}{entry['by']:>6} | {entry['line']}{RESET}")
+    if with_line:
+        print(f"{color}{entry['by']:>6} | {entry['line']}{RESET}")
     if entry["by"] == "LM" and not entry["usable"]:
         print(f"       | LM output not usable ({entry['lm_error']}): {entry['lm_output']}")
         return
