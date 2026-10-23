@@ -23,14 +23,16 @@ SIMPLE_TYPES = (bool, int, float, str, list, tuple, dict, set, date, type(None))
 
 RED, PURPLE, RESET = "\033[31m", "\033[35m", "\033[0m"
 
-# Shows the LM the trace format. Deliberately about people other than the
-# demo's ten scientists, so it doesn't give away any of the answer.
-LMULATOR_EXAMPLES = """Q: Which Beatle was born first?
-from datetime import date
-birthdays = get_beatles_birthdays()
-state: {}
-line: birthdays = get_beatles_birthdays()
-delta state: {'birthdays': [('John Lennon', date(1940, 10, 9)), ('Paul McCartney', date(1942, 6, 18)), ('George Harrison', date(1943, 2, 25)), ('Ringo Starr', date(1940, 7, 7))]}
+# Shows the LM the trace format. Deliberately not about birthdays or dates,
+# so the LM gets no help with the demo's question from the examples.
+LMULATOR_EXAMPLES = """Q: How many of these animals can fly: penguin, eagle, bat, ostrich?
+animals = ['penguin', 'eagle', 'bat', 'ostrich']
+num_flying = 0
+for animal in animals:
+    flies = can_fly(animal)
+state: {'animals': ['penguin', 'eagle', 'bat', 'ostrich'], 'num_flying': 1, 'animal': 'bat'}
+line:     flies = can_fly(animal)
+delta state: {'flies': True}
 
 Q: What are the capitals of France and Japan?
 capitals = {}
